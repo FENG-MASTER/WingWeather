@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,7 +20,7 @@ import android.util.Log;
 import com.wingweather.qianzise.wingweather.R;
 
 /**
- * Created by qianzise on 2017/3/8 0008.
+ * 自定义的一个view,用于显示图片,并提供一个圆圈边框,参考了hdodenhof/CircleImageView的开源代码
  */
 
 public class CircleImageView extends android.support.v7.widget.AppCompatImageView{
@@ -28,10 +29,18 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private Paint mCirlePaint=new Paint();//画圈画笔
     private Paint mImagePaint=new Paint();//画图画笔
 
-    private Bitmap mBitmap;
+    private Bitmap mBitmap;//当前绘制bitmap
+    private BitmapShader bitmapShader;//当前绘制shader
+    private Matrix mMatrix=new Matrix();
+
+    private float mBitmapW;//bitmap宽度
+    private float mBitmapH;//bitmap高度
+    private float mViewW;//控件宽度
+    private float mViewH;//控件高度
 
     private float circleRadius;//圆圈半径
-    private int circleColor =Color.BLACK;
+    private int circleColor =Color.BLACK;//圆圈的边框颜色
+    private float circleBorder;//圆圈边框大小
 
 
     private boolean mReady=false;
@@ -48,30 +57,19 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Log.e("my","构造");
+
         super.setScaleType(SCALE_TYPE);
 
 
         TypedArray a=context.obtainStyledAttributes(attrs,R.styleable.CircleImageView,defStyleAttr,0);
-        int indexs=a.getIndexCount();
-        for (int i=0;i<indexs;i++){
-            int attr=a.getIndex(i);
+        circleColor =a.getColor(R.styleable.CircleImageView_circleColor,Color.BLACK);
+        circleBorder =a.getDimension(R.styleable.CircleImageView_circleBorder,1);
 
-            switch (attr){
-                case R.styleable.CircleImageView_circle_color:
-                    circleColor =a.getColor(i,Color.BLACK);
-                    break;
-                case R.styleable.CircleImageView_circle_r:
-                    circleRadius =a.getDimension(R.styleable.CircleImageView_circle_r,1);
-                    break;
-                default:
-                    break;
-            }
-        }
 
         a.recycle();
 
         mReady=true;
+
 
         if (mSetupPending) {
             initPaint();
@@ -82,6 +80,15 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     }
 
+    /**
+     * 获取几个高度和宽度
+     */
+    private void getHeightAndWidth(){
+        mBitmapH=mBitmap.getHeight();
+        mBitmapW=mBitmap.getWidth();
+        mViewH=getHeight();
+        mViewW=getWidth();
+    }
 
 
     private void initPaint(){
@@ -93,21 +100,25 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         if (mBitmap == null) {
             return;
         }
-        Log.e("my","initPaint");
+
+
+        getHeightAndWidth();
+
         mCirlePaint=new Paint();
         mCirlePaint.setColor(circleColor);
-        mCirlePaint.setStrokeWidth(2);
+        mCirlePaint.setStrokeWidth(circleBorder);
         mCirlePaint.setAntiAlias(true);//反锯齿
         mCirlePaint.setStyle(Paint.Style.STROKE);
 
 
-        BitmapShader bitmapShader=new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        bitmapShader=new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mImagePaint=new Paint();
         mImagePaint.setShader(bitmapShader);
         mImagePaint.setAntiAlias(true);//反锯齿
 
-        circleRadius=Math.min(getWidth(),getHeight())/2;//设置绘制圈的半径为图片的一半
+        circleRadius=Math.min(mViewW,mViewH)/2;//设置绘制圈的半径为图片的一半
 
+        upDateMatrix();
         invalidate();//强制刷新下,重绘
     }
 
@@ -118,7 +129,30 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     }
 
 
+    /**
+     * 更新变形矩阵
+     */
     private void upDateMatrix(){
+
+
+        float scale;
+        float dx = 0;
+        float dy = 0;
+
+        mMatrix.set(null);
+
+        if (mBitmapW * mViewH > mViewW * mBitmapH) {
+            scale = mViewH /  mBitmapH;
+            dx = (mViewW - mBitmapW * scale) * 0.5f;
+        } else {
+            scale = mViewW /  mBitmapW;
+            dy = (mViewH - mBitmapH * scale) * 0.5f;
+        }
+
+        mMatrix.setScale(scale, scale);
+        mMatrix.postTranslate(dx, dy );
+
+        bitmapShader.setLocalMatrix(mMatrix);
 
     }
 

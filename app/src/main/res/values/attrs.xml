@@ -4,7 +4,7 @@
 
 
     <declare-styleable name="CircleImageView">
-        <attr name="circle_r" format="dimension"/>
-        <attr name="circle_color" format="color"/>
+        <attr name="circleBorder" format="dimension"/>
+        <attr name="circleColor" format="color"/>
     </declare-styleable>
 </resources>

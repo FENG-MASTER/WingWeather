@@ -1,5 +1,6 @@
 package com.wingweather.qianzise.wingweather;
 
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
@@ -7,12 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
+
+import java.io.PipedReader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,14 +31,15 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.ll_top_image_content)
     LinearLayout linearLayout;
 
+
+
+
     private BottomBar mBottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView(savedInstanceState);
-
-
 
     }
 
@@ -69,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

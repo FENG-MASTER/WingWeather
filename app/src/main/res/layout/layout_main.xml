@@ -1,39 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    tools:context="com.wingweather.qianzise.wingweather.MainActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-
-        android:layout_height="match_parent">
-
-        <android.support.v4.view.ViewPager
+        <com.wingweather.qianzise.wingweather.view.WrapContentHeightViewPager
+            tools:context="com.wingweather.qianzise.wingweather.MainActivity"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/vp_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        </android.support.v4.view.ViewPager>
-
-        <!--<fragment-->
-            <!--android:id="@+id/fragment_a"-->
-            <!--android:layout_weight="1"-->
-            <!--android:name="com.wingweather.qianzise.wingweather.fragment.SideFragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--/>-->
+        </com.wingweather.qianzise.wingweather.view.WrapContentHeightViewPager>
+</merge>
 
 
-
-    </LinearLayout>
-
-
-</RelativeLayout>

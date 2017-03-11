@@ -34,14 +34,6 @@ public abstract class BaseWeatherFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BaseWeatherFragment(String param1, String param2) {
-        Bundle args = new Bundle();
-        args.putString(CITY1, param1);
-        args.putString(CITY2, param2);
-        setArguments(args);
-    }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +71,7 @@ public abstract class BaseWeatherFragment extends Fragment {
             weather2.update(new Runnable() {
                 @Override
                 public void run() {
-
+                    weatherUpdateSucceed(weather2);
                 }
             });
         }

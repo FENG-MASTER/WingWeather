@@ -3,6 +3,8 @@ package com.wingweather.qianzise.wingweather;
 import android.app.Application;
 import android.content.Context;
 
+import java.util.List;
+
 /**
  * Created by qianzise on 2017/2/27 0027.
  */
@@ -18,5 +20,13 @@ public class App extends Application {
 
     public static Context getContext(){
         return context;
+    }
+
+    public String getCity1(){
+       return MyPreferences.getInstance().getCityName1();
+    }
+
+    public String getCity2(){
+        return MyPreferences.getInstance().getCityName2();
     }
 }

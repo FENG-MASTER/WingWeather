@@ -51,6 +51,7 @@ public class SideFragment extends BaseWeatherFragment {
     @Override
     public void weatherUpdateSucceed(Weather weather) {
         recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
+        recyclerView.invalidate();
     }
 
     @Override

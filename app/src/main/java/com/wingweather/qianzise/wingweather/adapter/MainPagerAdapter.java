@@ -21,9 +21,8 @@ import java.util.List;
  */
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    public static final int COUNT=2;
+    public static final int COUNT=3;
     List<BaseWeatherFragment> fList=new ArrayList<>();
-    private Context context;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -36,8 +35,14 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         BaseWeatherFragment fragment2=SideFragment.newInstance(
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
+
+        BaseWeatherFragment fragment3=SideFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+
         fList.add(fragment1);
         fList.add(fragment2);
+        fList.add(fragment3);
     }
 
     @Override
