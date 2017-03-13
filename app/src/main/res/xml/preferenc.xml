@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:title="设置">
+
+    <PreferenceCategory android:title="城市设置">
+        <ListPreference
+            android:key="city1"
+            android:defaultValue="@string/chengdu"
+            android:dialogTitle="选择您所在城市"
+            android:entries="@array/cityNameArr"
+            android:entryValues="@array/cityVal"
+            android:title="你所在城市"/>
+
+        <ListPreference
+            android:key="city2"
+            android:defaultValue="@string/zhanjiang"
+            android:dialogTitle="选择对方所在城市"
+            android:entries="@array/cityNameArr"
+            android:entryValues="@array/cityVal"
+            android:title="对方所在城市"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

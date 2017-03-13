@@ -10,6 +10,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.wingweather.qianzise.wingweather.App;
+import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 
 /**

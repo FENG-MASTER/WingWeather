@@ -51,8 +51,11 @@ public abstract class BaseWeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v=inflater.inflate(getLayoutID(), container, false);
         ButterKnife.bind(this, v);
+        initViewAfterBind();
         return v;
     }
+
+    public abstract void initViewAfterBind();
 
     private void setCities(){
         weather1=Weather.newInstance(cityName1);

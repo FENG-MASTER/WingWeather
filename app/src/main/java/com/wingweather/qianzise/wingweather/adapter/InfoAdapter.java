@@ -50,9 +50,9 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.Holder> {
 
         holder.setLeft(l1.get(position).second);
         if (l1.get(position).first.equals(l2.get(position).first)){
-            holder.setRight(l1.get(position).first);
+            holder.setTitle(l1.get(position).first);
         }
-        holder.setTitle(l2.get(position).second);
+        holder.setRight(l2.get(position).second);
 
     }
 

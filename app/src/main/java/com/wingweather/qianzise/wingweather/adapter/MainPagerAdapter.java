@@ -11,6 +11,7 @@ import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.MyPreferences;
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.fragment.BaseWeatherFragment;
+import com.wingweather.qianzise.wingweather.fragment.HourlyTemperatureChartFragment;
 import com.wingweather.qianzise.wingweather.fragment.SideFragment;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 MyPreferences.getInstance().getCityName2());
 
 
-        BaseWeatherFragment fragment2=SideFragment.newInstance(
+        BaseWeatherFragment fragment2= HourlyTemperatureChartFragment.newInstance(
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 

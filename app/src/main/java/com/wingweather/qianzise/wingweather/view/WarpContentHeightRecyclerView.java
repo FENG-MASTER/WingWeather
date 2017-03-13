@@ -29,20 +29,19 @@ public class WarpContentHeightRecyclerView extends RecyclerView {
     protected void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);
 
-        int height = 0;
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            child.measure(widthSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            int h = child.getMeasuredHeight();
-            height += h;
-        }
-        if (height>heightSpec){
-
-        }else {
-            heightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-        }
-
-        super.onMeasure(widthSpec, heightSpec);
+//        int height = 0;
+//        for (int i = 0; i < getChildCount(); i++) {
+//            View child = getChildAt(i);
+//            child.measure(widthSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+//            int h = child.getMeasuredHeight();
+//            height += h;
+//        }
+//
+//        if (height<heightSpec){
+//            heightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+//        }
+//
+//        super.onMeasure(widthSpec, heightSpec);
     }
 
     @Override

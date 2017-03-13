@@ -40,12 +40,9 @@ public class SideFragment extends BaseWeatherFragment {
         return fragment;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v=super.onCreateView(inflater, container, savedInstanceState);
+    public void initViewAfterBind() {
         initList();
-        return v;
     }
 
     @Override

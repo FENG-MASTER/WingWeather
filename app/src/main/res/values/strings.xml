@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">WingWeather</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_data">无数据</string>
+
+    <string name="setting">设置</string>
+    <string name="exit">退出</string>
+
+
+
+    //城市初始值
+    <string name="chengdu">成都</string>
+    <string name="zhanjiang">湛江</string>
 </resources>
