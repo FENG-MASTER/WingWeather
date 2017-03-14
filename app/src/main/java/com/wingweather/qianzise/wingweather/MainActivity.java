@@ -1,21 +1,25 @@
 package com.wingweather.qianzise.wingweather;
 
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.os.Handler;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -23,14 +27,16 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabClickListener;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
+import com.wingweather.qianzise.wingweather.base.Config;
+import com.wingweather.qianzise.wingweather.base.MyPreferences;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
-import java.io.PipedReader;
+import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ctl_main)
@@ -42,12 +48,27 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    //左边显示城市的view
+    @BindView(R.id.tv_left_cityName)
+    TextView leftCityName;
+    //右边显示城市的view
+    @BindView(R.id.tv_right_cityName)
+    TextView rightCityName;
+
+    @BindView(R.id.im_toolbar_main)
+    ImageView mainImage;
+    @BindView(R.id.ci_left)
+    CircleImageView leftAvatar;
+    @BindView(R.id.ci_right)
+    CircleImageView rightAvatar;
 
 
 
     private BottomBar mBottomBar;
 
-    private boolean isVisbleForMenu=true;
+    private int imageViewSetting=0;
+
+    private boolean isVisibleForMenu =true;//标志位,决定是否显示菜单
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,16 +83,139 @@ public class MainActivity extends AppCompatActivity {
          mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.cl_main),
                 findViewById(R.id.myScrollingContent), savedInstanceState);
         mBottomBar.setItems(R.menu.bottom);
+        mBottomBar.setActiveTabColor(Color.BLUE);
 
         setSupportActionBar(toolbar);
         setTitle(" ");
 
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(2);
         bindViewPagerWitBottomBar(viewPager,mBottomBar);
 
         setDynamicMenu();
+        setCitesName();
+        setImageListener();
     }
 
+    private void setCitesName(){
+        leftCityName.setText(MyPreferences.getInstance().getCityName1());
+        rightCityName.setText(MyPreferences.getInstance().getCityName2());
+
+    }
+
+    private void setImageListener(){
+        mainImage.setOnClickListener(this);
+        rightAvatar.setOnClickListener(this);
+        leftAvatar.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int code=0;
+        switch (v.getId()){
+            case R.id.im_toolbar_main:
+                //点击主页图片
+                code= Config.CODE_MAIN_IMAGE;
+                break;
+            case R.id.ci_left:
+                //点击左侧头像
+                code=Config.CODE_LEFT_IMAGE;
+                break;
+
+            case R.id.ci_right:
+                //点击右侧头像
+                code=Config.CODE_RIGHT_IMAGE;
+                break;
+            default:
+                break;
+        }
+        sentOpenImageIntent(code);
+
+    }
+
+    private void sentOpenImageIntent(int code){
+        Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("crop", true);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent,code);
+    }
+
+    private void zoomImage(Uri uri){
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", "true");
+
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("return-data", true);
+
+        startActivityForResult(intent, Config.CODE_ZOOM_IMAGE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode==RESULT_OK){
+            switch (requestCode){
+                case Config.CODE_MAIN_IMAGE:
+                case Config.CODE_LEFT_IMAGE:
+                case Config.CODE_RIGHT_IMAGE:
+                    //要执行个缩放,必须记录下是那个view请求的改变图片
+                    imageViewSetting=requestCode;
+                    zoomImage(data.getData());
+                    break;
+                case Config.CODE_ZOOM_IMAGE:
+                    //缩放过后
+                    setImageToView(getBitmapFromIntent(data));
+
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
+                    break;
+            }
+
+        }else {
+            Snackbar.make(toolbar,"选择图片出错!",Snackbar.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void setImageToView(Bitmap bitmapFromUri) {
+        switch (imageViewSetting){
+            case Config.CODE_MAIN_IMAGE:
+                mainImage.setImageBitmap(bitmapFromUri);
+                break;
+            case Config.CODE_LEFT_IMAGE:
+                leftAvatar.setImageBitmap(bitmapFromUri);
+                break;
+            case Config.CODE_RIGHT_IMAGE:
+                rightAvatar.setImageBitmap(bitmapFromUri);
+                break;
+            default:
+
+                break;
+        }
+        imageViewSetting=0;
+    }
+
+
+    private Bitmap getBitmapFromIntent(Intent intent){
+        Bundle bundle=intent.getExtras();
+        Bitmap bitmap=null;
+        if (bundle!=null){
+            bitmap=bundle.getParcelable("data");
+        }
+        return bitmap;
+    }
 
     /**
      * 设置菜单根据滚动动态显示和隐藏
@@ -83,11 +227,11 @@ public class MainActivity extends AppCompatActivity {
                 if ((Math.abs(verticalOffset)+10 >= appBarLayout.getTotalScrollRange())){
                     //滑动到顶了,这个时候应该取消右上角菜单的按钮显示
 
-                    isVisbleForMenu=false;
+                    isVisibleForMenu =false;
                     invalidateOptionsMenu();
                 }else {
-                    if(!isVisbleForMenu){
-                        isVisbleForMenu=true;
+                    if(!isVisibleForMenu){
+                        isVisibleForMenu =true;
                         invalidateOptionsMenu();
                     }
                 }
@@ -127,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
 
                 bottomBar.selectTabAtPosition(position,true);
+
             }
 
             @Override
@@ -166,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();//清除下菜单才行,不然会出现很多个
-        if (isVisbleForMenu){
+        if (isVisibleForMenu){
             getMenuInflater().inflate(R.menu.option,menu);
             return true;
 
@@ -182,4 +327,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         mBottomBar.onSaveInstanceState(outState);
     }
+
+
 }

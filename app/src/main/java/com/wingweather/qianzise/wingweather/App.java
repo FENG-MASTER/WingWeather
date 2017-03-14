@@ -3,7 +3,7 @@ package com.wingweather.qianzise.wingweather;
 import android.app.Application;
 import android.content.Context;
 
-import java.util.List;
+import com.wingweather.qianzise.wingweather.base.MyPreferences;
 
 /**
  * Created by qianzise on 2017/2/27 0027.

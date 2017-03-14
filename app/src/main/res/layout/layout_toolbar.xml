@@ -1,55 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:gravity="bottom"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
 
-    <LinearLayout
 
-        android:gravity="bottom"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:id="@+id/ll_top_image_content"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        app:layout_collapseMode="parallax"
+        app:layout_collapseParallaxMultiplier="0.6">
 
-
-
-        <!--<de.hdodenhof.circleimageview.CircleImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:src="@drawable/head"-->
-            <!--android:layout_height="match_parent"/>-->
-
-        <!--<de.hdodenhof.circleimageview.CircleImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:src="@drawable/head"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:layout_height="match_parent"/>-->
-
-
-      <com.wingweather.qianzise.wingweather.view.CircleImageView
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
+        <ImageView
+            android:id="@+id/im_toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
             android:scaleType="centerCrop"
-
-            android:src="@drawable/head"
-            android:layout_height="match_parent"/>
-
-        <com.wingweather.qianzise.wingweather.view.CircleImageView
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/head"
-            android:scaleType="centerCrop"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
+            android:src="@drawable/image_main"
+            />
+    </FrameLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal">
 
 
-</RelativeLayout>
+        <LinearLayout
+
+            android:id="@+id/ll_top_image_content"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:clickable="true"
+            android:gravity="bottom"
+            android:weightSum="4"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/tv_left_cityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="成都"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <com.wingweather.qianzise.wingweather.view.CircleImageView
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/ci_left"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/head"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.wingweather.qianzise.wingweather.view.CircleImageView
+                    android:id="@+id/ci_right"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/head"/>
+
+                <TextView
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/tv_right_cityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="8dp"
+                    android:text="成都"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</merge>
+

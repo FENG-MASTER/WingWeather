@@ -2,7 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="主页"/>
-    <item android:title="24小时"/>
-    <item android:title="其他"/>
+    <item android:title="主页" android:icon="@drawable/delicious"/>
+    <item android:title="24小时" android:icon="@drawable/line_chart"/>
+    <item android:title="其他" android:icon="@drawable/doughnut_chart"/>
 </menu>

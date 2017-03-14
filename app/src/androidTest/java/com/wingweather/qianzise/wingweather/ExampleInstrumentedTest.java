@@ -23,4 +23,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.wingweather.qianzise.wingweather", appContext.getPackageName());
     }
+
+
 }

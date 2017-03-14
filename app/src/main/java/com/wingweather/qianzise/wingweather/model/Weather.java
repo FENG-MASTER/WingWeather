@@ -5,6 +5,7 @@ import android.util.Pair;
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.api.Apii;
+import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Weather {
         if (cityname != null) {
             return cityname;
         } else {
-            return "beijing";
+            return Config.DEF_CITY1;
         }
     }
 
@@ -42,7 +43,7 @@ public class Weather {
             return App.getContext().getString(R.string.no_data);
 
         }
-        return mWeatherBean.getInfo().getNow().getTmp();
+        return mWeatherBean.getInfo().getNow().getTmp()+"°";
     }
 
     public String getCondition() {
@@ -58,7 +59,7 @@ public class Weather {
             return App.getContext().getString(R.string.no_data);
 
         }
-        return mWeatherBean.getInfo().getAirQuality().getCityAqi().getAqi();
+        return mWeatherBean.getInfo().getAirQuality().getCityAqi().getQualityText();
     }
 
 
@@ -66,7 +67,7 @@ public class Weather {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
         }
-        return mWeatherBean.getInfo().getDaily_forecast().get(0).getPop();
+        return mWeatherBean.getInfo().getDaily_forecast().get(0).getPop()+"%";
     }
 
     public String getWindLevel() {

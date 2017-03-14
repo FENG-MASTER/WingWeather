@@ -70,7 +70,14 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment implemen
         axisX.setTextSize(20);//设置字体大小
         data.setAxisXBottom(axisX); //x 轴在底部
         axisX.setHasLines(true); //x 轴分割线
+        Axis axisY=new Axis();
+        axisY.setHasLines(true);
+        data.setAxisYLeft(axisY);
 
+//        Viewport viewport=chartView.getCurrentViewport();
+//        viewport.bottom=0;
+//        viewport.top=3;
+//        chartView.setCurrentViewport(viewport);
         // Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
         chartView.setZoomEnabled(false);
         chartView.setLineChartData(data);

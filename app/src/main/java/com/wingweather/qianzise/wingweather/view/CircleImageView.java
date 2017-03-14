@@ -16,8 +16,10 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.wingweather.qianzise.wingweather.R;
+import com.wingweather.qianzise.wingweather.base.MyPreferences;
 
 /**
  * 自定义的一个view,用于显示图片,并提供一个圆圈边框,参考了hdodenhof/CircleImageView的开源代码
@@ -80,6 +82,12 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     }
 
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(heightMeasureSpec, heightMeasureSpec);
+    }
+
     /**
      * 获取几个高度和宽度
      */
@@ -117,7 +125,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         mImagePaint.setAntiAlias(true);//反锯齿
 
         circleRadius=Math.min(mViewW,mViewH)/2;//设置绘制圈的半径为图片的一半
-
+        load();
         upDateMatrix();
         invalidate();//强制刷新下,重绘
     }
@@ -127,6 +135,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         super.onSizeChanged(w, h, oldw, oldh);
         initPaint();
     }
+
 
 
     /**
@@ -158,43 +167,59 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e("my","onDraw");
+
 
         if (mBitmap==null){
             return;
         }
-
+        canvas.drawRect(-1,-1,getWidth()+1,getHeight()+1,mCirlePaint);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, circleRadius, mImagePaint);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, circleRadius, mCirlePaint);
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-        Log.e("my","setImageBitmap");
+
         super.setImageBitmap(bm);
         mBitmap=bm;
+        save(mBitmap);
         initPaint();
+
     }
 
 
     @Override
     public void setImageDrawable(@Nullable Drawable drawable) {
-        Log.e("my","setImageDrawable");
+
         super.setImageDrawable(drawable);
         mBitmap=getBitmap(drawable);
+        save(mBitmap);
         initPaint();
+
     }
 
 
     @Override
     public void setImageResource(@DrawableRes int resId) {
-        Log.e("my","setImageResource");
+
         super.setImageResource(resId);
         mBitmap=getBitmap(getDrawable());
         initPaint();
+
     }
 
+    private void save(Bitmap bitmap){
+        if (bitmap!=null){
+            MyPreferences.saveImage(getId(),bitmap);
+        }
+    }
 
+    private void load(){
+        Bitmap bitmap=MyPreferences.loadImage(getId());
+        if (bitmap!=null){
+            mBitmap=bitmap;
+        }
+    }
 
 
     private Bitmap getBitmap(Drawable drawable) {

@@ -1,24 +1,20 @@
 package com.wingweather.qianzise.wingweather.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
 
-import com.wingweather.qianzise.wingweather.App;
-import com.wingweather.qianzise.wingweather.MyPreferences;
-import com.wingweather.qianzise.wingweather.R;
+import com.wingweather.qianzise.wingweather.base.MyPreferences;
 import com.wingweather.qianzise.wingweather.fragment.BaseWeatherFragment;
 import com.wingweather.qianzise.wingweather.fragment.HourlyTemperatureChartFragment;
+import com.wingweather.qianzise.wingweather.fragment.OtherChartFragment;
 import com.wingweather.qianzise.wingweather.fragment.SideFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by qianzise on 2017/3/2 0002.
+ *
  */
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
@@ -37,7 +33,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 
-        BaseWeatherFragment fragment3=SideFragment.newInstance(
+        BaseWeatherFragment fragment3= OtherChartFragment.newInstance(
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 

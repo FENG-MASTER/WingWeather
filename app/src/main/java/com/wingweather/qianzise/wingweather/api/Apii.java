@@ -10,8 +10,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.wingweather.qianzise.wingweather.App;
-import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
+import com.wingweather.qianzise.wingweather.util.Util;
 
 /**
  * Created by qianzise on 2017/2/27 0027.
@@ -76,6 +76,8 @@ public class Apii {
         if (listener==null||city==null){
             return;
         }
+
+        city= Util.hanziToPinyin_city(city);
 
         sendRequest(BASE_API_URL + ALL_INFO + "?" + "city=" + city + "&key=" + KEY, new Response.Listener<String>() {
             @Override
