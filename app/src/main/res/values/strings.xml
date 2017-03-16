@@ -13,4 +13,5 @@
     //城市初始值
     <string name="chengdu">成都</string>
     <string name="zhanjiang">湛江</string>
+    <string name="change_main_image">修改主页图片</string>
 </resources>

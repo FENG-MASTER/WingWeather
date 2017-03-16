@@ -46,7 +46,7 @@ public class MyPreferences {
     public static boolean saveImage(int id, Bitmap bitmap){
         FileOutputStream fileOutputStream=null;
         try {
-            fileOutputStream=App.getContext().openFileOutput(Config.IMAGE+id, Context.MODE_PRIVATE);
+            fileOutputStream=App.getContext().openFileOutput(Config.IMAGE+id+".png", Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -58,11 +58,11 @@ public class MyPreferences {
     public static Bitmap loadImage(int id){
         FileInputStream fileInputStream=null;
         try {
-            fileInputStream=App.getContext().openFileInput(Config.IMAGE+id);
+            fileInputStream=App.getContext().openFileInput(Config.IMAGE+id+".png");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        
+
 
         return BitmapFactory.decodeStream(fileInputStream);
     }

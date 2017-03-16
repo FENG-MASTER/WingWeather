@@ -72,11 +72,17 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
         mReady=true;
 
-
-        if (mSetupPending) {
+        if (load()){
             initPaint();
-            mSetupPending = false;
+            mSetupPending=false;
+        }else {
+            if (mSetupPending) {
+                initPaint();
+                mSetupPending = false;
+            }
         }
+
+
 
 
 
@@ -125,7 +131,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         mImagePaint.setAntiAlias(true);//反锯齿
 
         circleRadius=Math.min(mViewW,mViewH)/2;//设置绘制圈的半径为图片的一半
-        load();
+
         upDateMatrix();
         invalidate();//强制刷新下,重绘
     }
@@ -182,7 +188,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
         super.setImageBitmap(bm);
         mBitmap=bm;
-        save(mBitmap);
+
         initPaint();
 
     }
@@ -193,7 +199,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
         super.setImageDrawable(drawable);
         mBitmap=getBitmap(drawable);
-        save(mBitmap);
+
         initPaint();
 
     }
@@ -208,16 +214,19 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     }
 
-    private void save(Bitmap bitmap){
-        if (bitmap!=null){
-            MyPreferences.saveImage(getId(),bitmap);
+    public void save(){
+        if (mBitmap!=null){
+            MyPreferences.saveImage(getId(),mBitmap);
         }
     }
 
-    private void load(){
+    private boolean load(){
         Bitmap bitmap=MyPreferences.loadImage(getId());
         if (bitmap!=null){
             mBitmap=bitmap;
+            return true;
+        }else {
+            return false;
         }
     }
 

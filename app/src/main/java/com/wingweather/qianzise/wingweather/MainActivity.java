@@ -10,6 +10,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.fragment.HourlyTemperatureChartFragment;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
 import java.io.FileNotFoundException;
@@ -36,7 +38,7 @@ import java.io.FileNotFoundException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ctl_main)
@@ -104,19 +106,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setImageListener(){
-        mainImage.setOnClickListener(this);
-        rightAvatar.setOnClickListener(this);
-        leftAvatar.setOnClickListener(this);
+        rightAvatar.setOnLongClickListener(this);
+        leftAvatar.setOnLongClickListener(this);
     }
 
+
+
     @Override
-    public void onClick(View v) {
+    public boolean onLongClick(View v) {
         int code=0;
         switch (v.getId()){
-            case R.id.im_toolbar_main:
-                //点击主页图片
-                code= Config.CODE_MAIN_IMAGE;
-                break;
             case R.id.ci_left:
                 //点击左侧头像
                 code=Config.CODE_LEFT_IMAGE;
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         sentOpenImageIntent(code);
-
+        return true;
     }
 
     private void sentOpenImageIntent(int code){
@@ -193,12 +192,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (imageViewSetting){
             case Config.CODE_MAIN_IMAGE:
                 mainImage.setImageBitmap(bitmapFromUri);
+
                 break;
             case Config.CODE_LEFT_IMAGE:
                 leftAvatar.setImageBitmap(bitmapFromUri);
+                leftAvatar.save();
                 break;
             case Config.CODE_RIGHT_IMAGE:
                 rightAvatar.setImageBitmap(bitmapFromUri);
+                rightAvatar.save();
                 break;
             default:
 
@@ -254,6 +256,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (position>=0&&position<MainPagerAdapter.COUNT){
                     viewPager.setCurrentItem(position,true);
                 }
+
+                if (position==1){
+                    ((HourlyTemperatureChartFragment)
+                            ((FragmentPagerAdapter)viewPager.getAdapter()).
+                                    getItem(position)).onViewTouch(bottomBar);
+                }
             }
 
             @Override
@@ -295,6 +303,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //打开设置
                 startActivity(SettingsActivity.class);
                 break;
+            case R.id.item_change_main_image:
+                sentOpenImageIntent(Config.CODE_MAIN_IMAGE);
+                break;
             case R.id.item_exit:
                 //退出程序
                 finish();
@@ -326,6 +337,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mBottomBar.onSaveInstanceState(outState);
+    }
+
+
+
+    public interface ViewTouchListener{
+        void onViewTouch(View view);
     }
 
 

@@ -2,11 +2,22 @@ package com.wingweather.qianzise.wingweather.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.PopupWindow;
 
+import com.nineoldandroids.animation.AnimatorSet;
+import com.wangjie.androidbucket.utils.ABTextUtil;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+import com.wingweather.qianzise.wingweather.MainActivity;
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
+import com.wingweather.qianzise.wingweather.view.ChartSelecter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +42,19 @@ import lecho.lib.hellocharts.view.LineChartView;
  * 用于显示24小时两个城市的表格
  */
 
-public class HourlyTemperatureChartFragment extends BaseWeatherFragment implements Observer<Line> {
+public class HourlyTemperatureChartFragment extends BaseWeatherFragment
+        implements Observer<Line>,
+        MainActivity.ViewTouchListener,
+        RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
     @BindView(R.id.lineChart_hourly_temp)
     LineChartView chartView;
+    @BindView(R.id.fab)
+    RapidFloatingActionButton rfab;
+    @BindView(R.id.rfal)
+    RapidFloatingActionLayout rfal;
+
     private List<Line> lines=new ArrayList<>();
+    RapidFloatingActionHelper rfabHelper;
 
     public static HourlyTemperatureChartFragment newInstance(String param1, String param2) {
 
@@ -52,7 +72,39 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment implemen
         WeatherObservable weatherObservable2=new WeatherObservable(weather2.getCityName());
         weatherObservable1.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
         weatherObservable2.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+
+        initFab();
+
+
     }
+
+    private void initFab(){
+        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(getContext());
+        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+        List<RFACLabelItem> items = new ArrayList<>();
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Github: wangjiegulu")
+                .setResId(R.mipmap.ic_launcher)
+                .setIconNormalColor(0xffd84315)
+                .setIconPressedColor(0xffbf360c)
+                .setWrapper(0)
+        );
+
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(ABTextUtil.dip2px(getContext(), 5))
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(ABTextUtil.dip2px(getContext(), 5))
+        ;
+        rfabHelper = new RapidFloatingActionHelper(
+                getContext(),
+                rfal,
+                rfab,
+                rfaContent
+        ).build();
+
+    }
+
 
     @Override
     public void weatherUpdateSucceed(Weather weather) {
@@ -115,6 +167,29 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment implemen
 
     @Override
     public void onComplete() {
+
+    }
+
+    @Override
+    public void onRFACItemLabelClick(int i, RFACLabelItem rfacLabelItem) {
+        rfabHelper.toggleContent();
+    }
+
+    @Override
+    public void onRFACItemIconClick(int i, RFACLabelItem rfacLabelItem) {
+        rfabHelper.toggleContent();
+    }
+
+    @Override
+    public void onViewTouch(View view) {
+        showSelecter(view);
+    }
+
+    private void showSelecter(View view){
+        PopupWindow window=new ChartSelecter(getContext());
+        int[] location=new int[2];
+        view.getLocationOnScreen(location);
+        window.showAtLocation(view, Gravity.BOTTOM,location[0],location[1]);
 
     }
 }
