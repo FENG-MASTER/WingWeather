@@ -28,8 +28,7 @@ import lecho.lib.hellocharts.view.LineChartView;
  * 用于显示24小时两个城市的表格
  */
 
-public class HourlyTemperatureChartFragment extends BaseWeatherFragment
-        implements Observer<Line>{
+public class HourlyTemperatureChartFragment extends BaseWeatherFragment {
     @BindView(R.id.lineChart_hourly_temp)
     LineChartView chartView;
 
@@ -48,21 +47,29 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment
 
     @Override
     public void initViewAfterBind() {
-        WeatherObservable weatherObservable1=new WeatherObservable(weather1.getCityName());
-        WeatherObservable weatherObservable2=new WeatherObservable(weather2.getCityName());
-        weatherObservable1.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
-        weatherObservable2.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+        if (weather1.getHourlyTempLine()!=null){
+            handleLine(weather1.getHourlyTempLine());
+        }
+
+        if (weather2.getHourlyTempLine()!=null){
+            handleLine(weather2.getHourlyTempLine());
+        }
 
 
     }
 
-    @Override
-    public void weatherUpdateSucceed(Weather weather) {
-
-    }
 
     private void handleLine(Line line){
-
+        line.setColor(Color.BLUE);
+        line.setPointColor(Color.GREEN);
+        line.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.DIAMOND）
+        line.setCubic(false);//曲线是否平滑，即是曲线还是折线
+        line.setFilled(false);//是否填充曲线的面积
+        line.setHasLabels(true);//曲线的数据坐标是否加上备注
+        line.setHasLines(true);//是否用线显示。如果为false 则没有曲线只有点显示
+        line.setHasPoints(true);//是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点
+        lines.add(line);
+        update();
     }
 
     private void update(){
@@ -95,34 +102,7 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment
         return R.layout.fragment_hourlytemperaturechart;
     }
 
-    @Override
-    public void onSubscribe(Disposable d) {
 
-    }
-
-    @Override
-    public void onNext(Line value) {
-        value.setColor(Color.BLUE);
-        value.setPointColor(Color.GREEN);
-        value.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.DIAMOND）
-        value.setCubic(false);//曲线是否平滑，即是曲线还是折线
-        value.setFilled(false);//是否填充曲线的面积
-        value.setHasLabels(true);//曲线的数据坐标是否加上备注
-        value.setHasLines(true);//是否用线显示。如果为false 则没有曲线只有点显示
-        value.setHasPoints(true);//是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点
-        lines.add(value);
-        update();
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
 
     @OnClick(R.id.lineChart_hourly_temp)
     public void select(){
@@ -132,7 +112,14 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment
 
     private void showSelector(){
         ChartSelector selector=new ChartSelector(getContext(),R.style.dialog);
-
         selector.show();
     }
+
+    @Override
+    public void onWeatherChange(Weather weather) {
+        if (weather.getHourlyTempLine()!=null){
+            handleLine(weather.getHourlyTempLine());
+        }
+    }
+
 }

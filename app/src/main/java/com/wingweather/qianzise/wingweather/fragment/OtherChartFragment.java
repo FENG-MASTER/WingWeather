@@ -16,11 +16,6 @@ public class OtherChartFragment extends BaseWeatherFragment {
     }
 
     @Override
-    public void weatherUpdateSucceed(Weather weather) {
-
-    }
-
-    @Override
     public int getLayoutID() {
         return R.layout.fragment_otherchart;
     }
@@ -35,4 +30,8 @@ public class OtherChartFragment extends BaseWeatherFragment {
         return fragment;
     }
 
+    @Override
+    public void onWeatherChange(Weather weather) {
+
+    }
 }

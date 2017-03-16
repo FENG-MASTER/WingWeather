@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * 基础天气fragment,所有基于天气的fragment都应该继承此类,包装了天气的加载和更新功能
  */
-public abstract class BaseWeatherFragment extends Fragment {
+public abstract class BaseWeatherFragment extends Fragment implements Weather.WeatherChangeListener {
 
     protected static final String CITY1 = "CITY1";
     protected static final String CITY2 = "CITY2";
@@ -65,31 +65,11 @@ public abstract class BaseWeatherFragment extends Fragment {
         weather1=Weather.newInstance(cityName1);
         weather2=Weather.newInstance(cityName2);
 
-        if (!weather1.isUpdate()){
-            weather1.update(new Runnable() {
-                @Override
-                public void run() {
-                    weatherUpdateSucceed(weather1);
-                }
-            });
-        }
+        weather1.addWeatherChangeListener(this);
+        weather2.addWeatherChangeListener(this);
 
-        if (!weather2.isUpdate()){
-            weather2.update(new Runnable() {
-                @Override
-                public void run() {
-                    weatherUpdateSucceed(weather2);
-                }
-            });
-        }
+
     }
-
-
-    /**
-     * 天气信息更新后会回调这个函数
-     * @param weather 更新了的天气
-     */
-    public abstract void weatherUpdateSucceed(Weather weather);
 
     /**
      * 子类fragment要加载的layout

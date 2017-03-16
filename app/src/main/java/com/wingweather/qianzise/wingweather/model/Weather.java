@@ -1,5 +1,6 @@
 package com.wingweather.qianzise.wingweather.model;
 
+import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.wingweather.qianzise.wingweather.App;
@@ -7,19 +8,31 @@ import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.api.Apii;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
+import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
+
+import org.reactivestreams.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import lecho.lib.hellocharts.model.Line;
+
 /**
  * 天气模型外层包装类
  */
 
-public class Weather {
+public class Weather implements Observer<Object>{
     private WeatherBean mWeatherBean;
     private String cityname;
-    private boolean isUpdate = false;
+    private List<WeatherChangeListener> listeners=new ArrayList<>();
+    private Line hourlyTempLine=null;
+    private boolean hourlyTempLineing=false;
+
 
     private Weather(String cityname) {
         this.cityname = cityname;
@@ -107,24 +120,22 @@ public class Weather {
         return l;
     }
 
-    /**
-     * 检测是否已经更新过
-     *
-     * @return 是否更新
-     */
-    public boolean isUpdate() {
-        return isUpdate;
+
+    public void updateHourlyTempLine(){
+        hourlyTempLineing=true;
+        WeatherObservable o=new WeatherObservable(cityname);
+        o.getWeatherLineDate().subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(this);
     }
 
-    public void update(final Runnable runnable) {
-        Apii.getInstance().getAll(getCityName(), new Apii.Listener<WeatherBean>() {
-            @Override
-            public void onReceive(WeatherBean weatherBean) {
-                mWeatherBean = weatherBean;
-                isUpdate = true;
-                runnable.run();
-            }
-        });
+    public Line getHourlyTempLine(){
+        if (hourlyTempLine==null&&!hourlyTempLineing){
+            updateHourlyTempLine();
+            return null;
+        }else {
+            return hourlyTempLine;
+        }
+
     }
 
 
@@ -183,7 +194,43 @@ public class Weather {
 
     }
 
+    public void addWeatherChangeListener(@NonNull WeatherChangeListener listener){
+        listeners.add(listener);
+    }
+
+    public void removeWeatherChangeListener(@NonNull WeatherChangeListener  listener){
+        listeners.remove(listener);
+    }
+
+    public void sendToListener(){
+        for (WeatherChangeListener l:listeners) {
+            l.onWeatherChange(this);
+        }
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onNext(Object value) {
+        sendToListener();
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
 
 
+    public interface WeatherChangeListener{
+        void onWeatherChange(Weather weather);
+    }
 
 }

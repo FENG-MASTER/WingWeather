@@ -45,11 +45,6 @@ public class SideFragment extends BaseWeatherFragment {
         initList();
     }
 
-    @Override
-    public void weatherUpdateSucceed(Weather weather) {
-        recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
-        recyclerView.invalidate();
-    }
 
     @Override
     public int getLayoutID() {
@@ -69,5 +64,11 @@ public class SideFragment extends BaseWeatherFragment {
 
     }
 
+
+    @Override
+    public void onWeatherChange(Weather weather) {
+        recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
+        recyclerView.invalidate();
+    }
 
 }
