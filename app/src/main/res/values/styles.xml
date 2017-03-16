@@ -8,4 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!--设置下弹出选择窗口的样式-->
+    <style name="dialog" parent="Theme.AppCompat.Light.Dialog">
+
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--去掉标题栏-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/white_light</item>
+        <!--背景-->
+
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
 </resources>

@@ -14,7 +14,7 @@ import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.util.Util;
 
 /**
- * Created by qianzise on 2017/2/27 0027.
+ * 用的和风天气的API
  */
 
 public class Apii {

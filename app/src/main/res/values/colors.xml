@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorToolBarMin">#a64a6ed8</color>
 
+    <color name="transparent">#00000000</color>
+    <color name="white_light">#22000000</color>
 </resources>

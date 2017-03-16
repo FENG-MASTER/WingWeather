@@ -12,12 +12,17 @@ public final class Config {
     public final static String DEF_CITY1="成都";
     public final static String DEF_CITY2="湛江";
 
+    //图片文件前缀
     public final static String IMAGE="image_";
 
-
+    //用于acitivity处理回调的请求码
     public final static int CODE_LEFT_IMAGE=1;
     public final static int CODE_RIGHT_IMAGE=2;
     public final static int CODE_MAIN_IMAGE=3;
     public final static int CODE_ZOOM_IMAGE=4;
 
+    public enum ChartType{
+        Hourly_Temp_Line,
+        Daily_Temp_Line
+    }
 }

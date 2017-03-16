@@ -2,6 +2,7 @@
 
 
 <GridView
+
     android:numColumns="auto_fit"
     android:stretchMode="columnWidth"
     android:gravity="center"
