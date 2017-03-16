@@ -2,11 +2,13 @@ package com.wingweather.qianzise.wingweather.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 
 import com.wingweather.qianzise.wingweather.R;
+import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.model.Weather;
-import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
 import com.wingweather.qianzise.wingweather.widget.ChartSelector;
 
 import java.util.ArrayList;
@@ -14,10 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
@@ -28,10 +27,11 @@ import lecho.lib.hellocharts.view.LineChartView;
  * 用于显示24小时两个城市的表格
  */
 
-public class HourlyTemperatureChartFragment extends BaseWeatherFragment {
+public class HourlyTemperatureChartFragment extends BaseWeatherFragment implements AdapterView.OnItemClickListener {
     @BindView(R.id.lineChart_hourly_temp)
     LineChartView chartView;
 
+    ChartSelector selector;
 
     private List<Line> lines=new ArrayList<>();
 
@@ -47,6 +47,9 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment {
 
     @Override
     public void initViewAfterBind() {
+        selector=new ChartSelector(getContext(),R.style.dialog);
+        selector.setOnItemClickListener(this);
+
         if (weather1.getHourlyTempLine()!=null){
             handleLine(weather1.getHourlyTempLine());
         }
@@ -111,7 +114,7 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment {
 
 
     private void showSelector(){
-        ChartSelector selector=new ChartSelector(getContext(),R.style.dialog);
+
         selector.show();
     }
 
@@ -122,4 +125,23 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment {
         }
     }
 
+
+    /**
+     * 这个是 {@link ChartSelector} 被选择后回调的函数
+     * @param parent 无所谓
+     * @param view 无所谓
+     * @param position 用这个就好,这个表示所选中的位置,直接对应
+     * @param id 目测和前面一样
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position){
+            case Config.ChartType.Daily_Temp_Line:
+                break;
+            case Config.ChartType.Hourly_Temp_Line:
+                break;
+            default:
+                break;
+        }
+    }
 }

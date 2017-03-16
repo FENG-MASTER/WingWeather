@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 import lecho.lib.hellocharts.model.Line;
 
 /**
- * 天气模型外层包装类
+ * 天气模型外层包装类,直接做成可订阅对象就好了
  */
 
 public class Weather implements Observer<Object>{
