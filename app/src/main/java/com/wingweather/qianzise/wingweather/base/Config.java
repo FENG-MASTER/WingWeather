@@ -21,8 +21,8 @@ public final class Config {
     public final static int CODE_MAIN_IMAGE=3;
     public final static int CODE_ZOOM_IMAGE=4;
 
-    public enum ChartType{
-        Hourly_Temp_Line,
-        Daily_Temp_Line
+    public static class ChartType{
+        public static final int Hourly_Temp_Line=1;
+        public static final int Daily_Temp_Line=2;
     }
 }

@@ -1,4 +1,4 @@
-package com.wingweather.qianzise.wingweather.view;
+package com.wingweather.qianzise.wingweather.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -73,6 +74,13 @@ public class ChartSelector extends AlertDialog {
 
 
     }
+
+    public void setOnItemClickListener(GridView.OnItemClickListener listener){
+        gridView.setOnItemClickListener(listener);
+    }
+
+
+
 
     private List<Map<String,Object>> getData(){
         List<Map<String,Object>> list=new ArrayList<>();

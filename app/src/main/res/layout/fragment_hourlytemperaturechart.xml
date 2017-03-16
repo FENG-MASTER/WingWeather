@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
 
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/lineChart_hourly_temp"

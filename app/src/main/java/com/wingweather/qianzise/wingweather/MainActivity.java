@@ -24,7 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
 import com.roughike.bottombar.OnTabClickListener;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
@@ -63,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     CircleImageView leftAvatar;
     @BindView(R.id.ci_right)
     CircleImageView rightAvatar;
-
 
 
     private BottomBar mBottomBar;
@@ -249,6 +250,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
      * @param bottomBar b
      */
     private void bindViewPagerWitBottomBar(final ViewPager viewPager, final BottomBar bottomBar){
+
+
         bottomBar.setOnTabClickListener(new OnTabClickListener() {
             @Override
             public void onTabSelected(int position) {
@@ -257,11 +260,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     viewPager.setCurrentItem(position,true);
                 }
 
-                if (position==1){
-                    ((HourlyTemperatureChartFragment)
-                            ((FragmentPagerAdapter)viewPager.getAdapter()).
-                                    getItem(position)).onViewTouch(bottomBar);
-                }
             }
 
             @Override
@@ -277,7 +275,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
             @Override
             public void onPageSelected(int position) {
-
                 bottomBar.selectTabAtPosition(position,true);
 
             }
@@ -338,12 +335,5 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         super.onSaveInstanceState(outState);
         mBottomBar.onSaveInstanceState(outState);
     }
-
-
-
-    public interface ViewTouchListener{
-        void onViewTouch(View view);
-    }
-
 
 }

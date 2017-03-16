@@ -40,11 +40,6 @@ dependencies {
         exclude module: 'support-compat'
 //        解决依赖问题
     }
-//    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
-//    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
-//    compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
-//    compile 'com.github.wangjiegulu:AndroidInject:1.0.6'
-//    compile 'com.nineoldandroids:library:2.4.0'
 
 
     compile 'com.android.support:appcompat-v7:23.4.0'
@@ -55,6 +50,7 @@ dependencies {
     //表格
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.roughike:bottom-bar:1.4.0.1'
+
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

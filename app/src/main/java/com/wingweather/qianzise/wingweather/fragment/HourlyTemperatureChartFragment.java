@@ -2,19 +2,18 @@ package com.wingweather.qianzise.wingweather.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 
 
-import com.wingweather.qianzise.wingweather.MainActivity;
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
-import com.wingweather.qianzise.wingweather.view.ChartSelector;
+import com.wingweather.qianzise.wingweather.widget.ChartSelector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -30,10 +29,10 @@ import lecho.lib.hellocharts.view.LineChartView;
  */
 
 public class HourlyTemperatureChartFragment extends BaseWeatherFragment
-        implements Observer<Line>,
-        MainActivity.ViewTouchListener {
+        implements Observer<Line>{
     @BindView(R.id.lineChart_hourly_temp)
     LineChartView chartView;
+
 
     private List<Line> lines=new ArrayList<>();
 
@@ -54,19 +53,15 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment
         weatherObservable1.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
         weatherObservable2.getWeatherLineDate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
-        initFab();
-
 
     }
-
-    private void initFab(){
-
-
-    }
-
 
     @Override
     public void weatherUpdateSucceed(Weather weather) {
+
+    }
+
+    private void handleLine(Line line){
 
     }
 
@@ -129,18 +124,15 @@ public class HourlyTemperatureChartFragment extends BaseWeatherFragment
 
     }
 
-
-
-    @Override
-    public void onViewTouch(View view) {
-        showSelector(view);
+    @OnClick(R.id.lineChart_hourly_temp)
+    public void select(){
+        showSelector();
     }
 
-    private void showSelector(View view){
+
+    private void showSelector(){
         ChartSelector selector=new ChartSelector(getContext(),R.style.dialog);
 
         selector.show();
-
-
     }
 }
