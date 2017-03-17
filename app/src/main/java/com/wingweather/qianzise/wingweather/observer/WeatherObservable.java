@@ -1,26 +1,18 @@
 package com.wingweather.qianzise.wingweather.observer;
 
 
-import android.util.Pair;
-
-import com.wingweather.qianzise.wingweather.MUtil;
 import com.wingweather.qianzise.wingweather.api.Apii;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
+import com.wingweather.qianzise.wingweather.util.Util;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
@@ -98,7 +90,7 @@ public class WeatherObservable {
                 while (i.hasNext()){
                     WeatherBean.infoBean.HourlyForecastBean bean=i.next();
                     list.add(new PointValue(
-                            MUtil.date2hour(bean.getDate()),
+                            Util.date2hour(bean.getDate()),
                             Integer.valueOf(bean.getTmp())));
                 }
 
