@@ -26,16 +26,14 @@ import android.widget.TextView;
 
 
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+
 import com.roughike.bottombar.OnTabClickListener;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
-import com.wingweather.qianzise.wingweather.fragment.HourlyTemperatureChartFragment;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
-import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -137,26 +135,26 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         Intent intent=new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_PICK);
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("crop", true);
-        intent.putExtra("return-data", true);
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        intent.putExtra("crop", true);
+//        intent.putExtra("return-data", true);
         startActivityForResult(intent,code);
     }
 
-    private void zoomImage(Uri uri){
+    private void zoomImage(Uri uri,int w,int h){
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // crop为true是设置在开启的intent中设置显示的view可以剪裁
         intent.putExtra("crop", "true");
 
         // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+        intent.putExtra("aspectX", w);
+        intent.putExtra("aspectY", h);
 
         // outputX,outputY 是剪裁图片的宽高
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
+        intent.putExtra("outputX", w*200);
+        intent.putExtra("outputY", h*100);
         intent.putExtra("return-data", true);
 
         startActivityForResult(intent, Config.CODE_ZOOM_IMAGE);
@@ -168,11 +166,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (resultCode==RESULT_OK){
             switch (requestCode){
                 case Config.CODE_MAIN_IMAGE:
+                    imageViewSetting=requestCode;
+                    zoomImage(data.getData(),0,0);
+                    break;
                 case Config.CODE_LEFT_IMAGE:
                 case Config.CODE_RIGHT_IMAGE:
                     //要执行个缩放,必须记录下是那个view请求的改变图片
                     imageViewSetting=requestCode;
-                    zoomImage(data.getData());
+                    zoomImage(data.getData(),1,1);
                     break;
                 case Config.CODE_ZOOM_IMAGE:
                     //缩放过后
@@ -193,15 +194,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         switch (imageViewSetting){
             case Config.CODE_MAIN_IMAGE:
                 mainImage.setImageBitmap(bitmapFromUri);
-
                 break;
             case Config.CODE_LEFT_IMAGE:
                 leftAvatar.setImageBitmap(bitmapFromUri);
-                leftAvatar.save();
                 break;
             case Config.CODE_RIGHT_IMAGE:
                 rightAvatar.setImageBitmap(bitmapFromUri);
-                rightAvatar.save();
                 break;
             default:
 

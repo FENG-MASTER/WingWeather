@@ -37,6 +37,7 @@ public class ChartSelector extends AlertDialog {
     GridView gridView;
 
     private Context mContext;
+    private GridView.OnItemClickListener listenerTemp=null;
 
     public ChartSelector(Context context) {
         super(context);
@@ -72,11 +73,18 @@ public class ChartSelector extends AlertDialog {
                         new String[]{"img","name"},
                         new int[]{R.id.iv_pop_item,R.id.tv_pop_item}));
 
-
+        if (listenerTemp!=null){
+            setOnItemClickListener(listenerTemp);
+            listenerTemp=null;
+        }
     }
 
     public void setOnItemClickListener(GridView.OnItemClickListener listener){
-        gridView.setOnItemClickListener(listener);
+        if (gridView!=null){
+            gridView.setOnItemClickListener(listener);
+        }else {
+            listenerTemp=listener;
+        }
     }
 
 

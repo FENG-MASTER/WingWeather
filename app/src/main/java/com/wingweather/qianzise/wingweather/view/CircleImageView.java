@@ -22,10 +22,10 @@ import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
 
 /**
- * 自定义的一个view,用于显示图片,并提供一个圆圈边框,参考了hdodenhof/CircleImageView的开源代码
+ * 自定义view,继承的子类都会具有切换图片后自动保存的功能
  */
 
-public class CircleImageView extends android.support.v7.widget.AppCompatImageView{
+public class CircleImageView extends AutoSaveImageView{
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
     private Paint mCirlePaint=new Paint();//画圈画笔
@@ -48,6 +48,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private boolean mReady=false;
     private boolean mSetupPending=false;
 
+    private boolean notFirstSetBitMap=false;
 
     public CircleImageView(Context context) {
         super(context);
@@ -72,15 +73,15 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
         mReady=true;
 
-        if (load()){
-            initPaint();
-            mSetupPending=false;
-        }else {
+//        if (load()){
+//            initPaint();
+//            mSetupPending=false;
+//        }else {
             if (mSetupPending) {
                 initPaint();
                 mSetupPending = false;
             }
-        }
+//        }
 
 
 
@@ -185,10 +186,8 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-
         super.setImageBitmap(bm);
-        mBitmap=bm;
-
+        mBitmap=getBitmap();
         initPaint();
 
     }
@@ -198,7 +197,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     public void setImageDrawable(@Nullable Drawable drawable) {
 
         super.setImageDrawable(drawable);
-        mBitmap=getBitmap(drawable);
+        mBitmap=getBitmap();
 
         initPaint();
 
@@ -209,7 +208,8 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     public void setImageResource(@DrawableRes int resId) {
 
         super.setImageResource(resId);
-        mBitmap=getBitmap(getDrawable());
+mBitmap=getBitmap();
+
         initPaint();
 
     }
@@ -221,6 +221,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     }
 
     private boolean load(){
+        notFirstSetBitMap=true;
         Bitmap bitmap=MyPreferences.loadImage(getId());
         if (bitmap!=null){
             mBitmap=bitmap;
