@@ -12,4 +12,5 @@
     <string name="chengdu">成都</string>
     <string name="zhanjiang">湛江</string>
     <string name="change_main_image">修改主页图片</string>
+    <string name="setting_about">作者:   GitHub:FENG-MASTER</string>
 </resources>

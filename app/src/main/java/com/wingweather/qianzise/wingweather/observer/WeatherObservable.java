@@ -18,10 +18,11 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
 
 public class WeatherObservable {
-    private String cityName;
+    private Weather weather;
 
-    public WeatherObservable(String city){
-        cityName=city;
+
+    public WeatherObservable(Weather weather){
+        this.weather=weather;
     }
 
     /**
@@ -32,7 +33,7 @@ public class WeatherObservable {
         return Observable.create(new ObservableOnSubscribe<WeatherBean>() {
             @Override
             public void subscribe(final ObservableEmitter<WeatherBean> e) throws Exception {
-                Apii.getInstance().getAll(cityName, new Apii.Listener<WeatherBean>() {
+                Apii.getInstance().getAll(weather.getCityName(), new Apii.Listener<WeatherBean>() {
                     @Override
                     public void onReceive(WeatherBean weatherBean) {
                         e.onNext(weatherBean);
@@ -69,6 +70,7 @@ public class WeatherObservable {
             public Line apply(List<PointValue> pointValues) throws Exception {
                 Line line=new Line();
                 line.setValues(pointValues);
+                weather.setHourlyTempLine(line);
                 return line;
             }
         });

@@ -21,4 +21,10 @@
 
     </PreferenceCategory>
 
+
+    <PreferenceCategory android:title="说明">
+        <Preference android:title="@string/setting_about"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

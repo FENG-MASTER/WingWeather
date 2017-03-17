@@ -123,9 +123,13 @@ public class Weather implements Observer<Object>{
 
     public void updateHourlyTempLine(){
         hourlyTempLineing=true;
-        WeatherObservable o=new WeatherObservable(cityname);
+        WeatherObservable o=new WeatherObservable(this);
         o.getWeatherLineDate().subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+    }
+
+    public void setHourlyTempLine(Line line){
+        hourlyTempLine=line;
     }
 
     public Line getHourlyTempLine(){
