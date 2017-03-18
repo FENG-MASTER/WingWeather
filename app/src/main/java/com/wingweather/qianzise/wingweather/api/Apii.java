@@ -1,17 +1,23 @@
 package com.wingweather.qianzise.wingweather.api;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.util.Util;
+
+import static android.graphics.Bitmap.Config.ARGB_8888;
 
 /**
  * 用的和风天气的API
@@ -24,6 +30,8 @@ public class Apii {
     private static final String HOURLY_FORECAST="hourly/";
     private static final String LIVE_INFO="suggestion/";
     private static final String ALL_INFO="weather/";
+    private static final String CON_ICON_URL="http://files.heweather.com/cond_icon/";
+    private static final String CON_ICON_SUFFIX=".png";
 
     private static final String KEY="aac0bdff0c8c475da834086428ece029";
 
@@ -70,6 +78,17 @@ public class Apii {
         mQueue.add(stringRequest);
 
     }
+    private void sendImageRequest(String fullURL,Response.Listener<Bitmap> listener){
+
+        ImageRequest imageRequest=new ImageRequest(fullURL, listener, 0, 0, ARGB_8888, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("err",error.toString());
+            }
+        });
+
+        mQueue.add(imageRequest);
+    }
 
 
     public void getAll(String city, final Listener<WeatherBean> listener){
@@ -85,6 +104,19 @@ public class Apii {
                 Gson gson=new Gson();
                WeatherBean weatherBean = gson.fromJson(response, WeatherBean.class);
                 listener.onReceive(weatherBean);
+            }
+        });
+
+    }
+
+
+    public void getWeatherConDrawable(String codeS, final Listener<Drawable> listener){
+        int code=Integer.valueOf(codeS);
+        sendImageRequest(CON_ICON_URL + code + CON_ICON_SUFFIX, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                BitmapDrawable bitmapDrawable=new BitmapDrawable(App.getContext().getResources(),response);
+                listener.onReceive(bitmapDrawable);
             }
         });
 

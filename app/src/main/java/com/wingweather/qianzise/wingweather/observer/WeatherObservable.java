@@ -1,6 +1,8 @@
 package com.wingweather.qianzise.wingweather.observer;
 
 
+import android.graphics.drawable.Drawable;
+
 import com.wingweather.qianzise.wingweather.api.Apii;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
@@ -136,6 +138,21 @@ public class WeatherObservable {
                 return line;
             }
         });
+    }
+
+    public static Observable<Drawable> getWeatherConDrawable(final String code){
+        return Observable.create(new ObservableOnSubscribe<Drawable>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Drawable> e) throws Exception {
+                Apii.getInstance().getWeatherConDrawable(code, new Apii.Listener<Drawable>() {
+                    @Override
+                    public void onReceive(Drawable drawable) {
+                        e.onNext(drawable);
+                    }
+                });
+            }
+        });
+
     }
 
 

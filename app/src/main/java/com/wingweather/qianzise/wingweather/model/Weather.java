@@ -67,6 +67,14 @@ public class Weather implements Observer<Object>{
         return mWeatherBean.getInfo().getNow().getTmp()+"°";
     }
 
+    public String getConditionCode(){
+        if (mWeatherBean == null) {
+            return "100";
+
+        }
+        return mWeatherBean.getInfo().getNow().getCondition().getCode();
+    }
+
     public String getCondition() {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
@@ -120,7 +128,7 @@ public class Weather implements Observer<Object>{
         List<Pair<String, String>> l = new ArrayList<>();
 
         l.add(new Pair<>("温度", getTemperture_Now()));
-        l.add(new Pair<>("天气状况", getCondition()));
+        l.add(new Pair<>("天气状况", getConditionCode()));
         l.add(new Pair<>("空气状况", getAQI()));
         l.add(new Pair<>("降水概率", getRainProbability()));
         l.add(new Pair<>("风力", getWindLevel()));
