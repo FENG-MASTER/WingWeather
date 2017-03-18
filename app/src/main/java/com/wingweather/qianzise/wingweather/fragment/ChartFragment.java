@@ -24,8 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import lecho.lib.hellocharts.model.Line;
-
 /**
  * 用于各种各样的图表
  */
@@ -77,7 +75,7 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_hourlytemperaturechart;
+        return R.layout.fragment_chart;
     }
 
 

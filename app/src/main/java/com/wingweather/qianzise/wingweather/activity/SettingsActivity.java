@@ -15,7 +15,7 @@ import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.base.Config;
 
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
 
     @Override

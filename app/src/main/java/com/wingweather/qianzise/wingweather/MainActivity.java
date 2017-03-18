@@ -29,6 +29,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.roughike.bottombar.BottomBar;
 
 import com.roughike.bottombar.OnTabClickListener;
+import com.wingweather.qianzise.wingweather.activity.BaseActivity;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.Config;
@@ -42,7 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
+public class MainActivity extends BaseActivity implements View.OnLongClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.ctl_main)
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             }
 
         }else {
-            Snackbar.make(toolbar,"选择图片出错!",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(toolbar,"选择图片出错!",Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -349,10 +350,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
 
-    private void startActivity(Class clazz){
-        Intent intent=new Intent(this,clazz);
-        startActivity(intent);
-    }
 
     @Override
     protected void onDestroy() {
