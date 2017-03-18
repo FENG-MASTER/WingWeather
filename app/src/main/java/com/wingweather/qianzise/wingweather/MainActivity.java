@@ -24,7 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.roughike.bottombar.BottomBar;
 
 import com.roughike.bottombar.OnTabClickListener;
@@ -32,8 +33,11 @@ import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.observer.BusAction;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @BindView(R.id.ci_right)
     CircleImageView rightAvatar;
 
-
-    private BottomBar mBottomBar;
+    @BindView(R.id.bottom_navigation_bar)
+    BottomNavigationBar navigationBar;
 
     private int imageViewSetting=0;
 
@@ -81,17 +85,20 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     private void initView(Bundle savedInstanceState){
         ButterKnife.bind(this);
 
-         mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.cl_main),
-                findViewById(R.id.myScrollingContent), savedInstanceState);
-        mBottomBar.setItems(R.menu.bottom);
-        mBottomBar.setActiveTabColor(Color.BLUE);
+        navigationBar
+                .addItem(new BottomNavigationItem(R.drawable.line_chart, "主页"))
+                .addItem(new BottomNavigationItem(R.drawable.chart_select, "图表").setInactiveIconResource(R.drawable.delicious).setActiveColor(Color.RED))
+                .addItem(new BottomNavigationItem(R.drawable.doughnut_chart, "其他"))
+                .initialise();
+
 
         setSupportActionBar(toolbar);
         setTitle(" ");
 
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(2);
-        bindViewPagerWitBottomBar(viewPager,mBottomBar);
+        bindViewPagerWitBottomBar(viewPager,navigationBar);
+
 
         setDynamicMenu();
         setCitesName();
@@ -247,24 +254,27 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
      * @param viewPager v
      * @param bottomBar b
      */
-    private void bindViewPagerWitBottomBar(final ViewPager viewPager, final BottomBar bottomBar){
+    private void bindViewPagerWitBottomBar(final ViewPager viewPager, final BottomNavigationBar bottomBar){
 
-
-        bottomBar.setOnTabClickListener(new OnTabClickListener() {
+        bottomBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
-
                 if (position>=0&&position<MainPagerAdapter.COUNT){
                     viewPager.setCurrentItem(position,true);
                 }
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
 
             }
 
             @Override
-            public void onTabReSelected(int position) {
-
+            public void onTabReselected(int position) {
+                EventBus.getDefault().post(new TabRePressEvent(position));
             }
         });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -273,8 +283,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
             @Override
             public void onPageSelected(int position) {
-                bottomBar.selectTabAtPosition(position,true);
-
+//                bottomBar.selectTabAtPosition(position,true);
+                bottomBar.selectTab(position,false);
             }
 
             @Override
@@ -285,11 +295,15 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
     }
 
-
-    private void startActivity(Class clazz){
-        Intent intent=new Intent(this,clazz);
-        startActivity(intent);
+    private static int lastPress=0;
+    private void selected(int pos){
+        if (lastPress==pos){
+            EventBus.getDefault().post(new TabRePressEvent(pos));
+        }else {
+            lastPress=pos;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -331,7 +345,27 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mBottomBar.onSaveInstanceState(outState);
+      //  mBottomBar.onSaveInstanceState(outState);
+    }
+
+
+    private void startActivity(Class clazz){
+        Intent intent=new Intent(this,clazz);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+
+    public static class TabRePressEvent{
+        public int pos;
+        public TabRePressEvent(int pos){
+            this.pos=pos;
+        }
     }
 
 }

@@ -56,5 +56,9 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:layout_gravity="bottom"
+        android:id="@+id/bottom_navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </android.support.design.widget.CoordinatorLayout>

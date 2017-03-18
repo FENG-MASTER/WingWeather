@@ -5,13 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
+    >
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <FrameLayout
 
-        <lecho.lib.hellocharts.view.LineChartView
-            android:id="@+id/lineChart_hourly_temp"
+            android:id="@+id/fl_chart"
             android:layout_width="match_parent"
-            android:layout_height="400dp"/>
+            android:layout_height="400dp">
+
+        </FrameLayout>
+
+
 
 
 

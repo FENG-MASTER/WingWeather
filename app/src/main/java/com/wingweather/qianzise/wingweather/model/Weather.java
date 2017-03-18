@@ -1,16 +1,14 @@
 package com.wingweather.qianzise.wingweather.model;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.api.Apii;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
-
-import org.reactivestreams.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +17,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import lecho.lib.hellocharts.model.Line;
 
@@ -27,15 +26,24 @@ import lecho.lib.hellocharts.model.Line;
  */
 
 public class Weather implements Observer<Object>{
-    private WeatherBean mWeatherBean;
-    private String cityname;
-    private List<WeatherChangeListener> listeners=new ArrayList<>();
-    private Line hourlyTempLine=null;
-    private boolean hourlyTempLineing=false;
+    private WeatherBean mWeatherBean;//bean本体
+    private String cityName;//城市名
+    private int mColor=Color.BLACK;//用于显示line的颜色
+
+    private List<WeatherChangeListener> listeners=new ArrayList<>();//存储所有监听者的list
+
+    private Line hourlyTempLine=null;//每小时天气状况line对象
+    private boolean hourlyTempLineing=false;//标志位,true表示正在更新hourlyTempLine对象
+
+    private Line hourlyRainPLine=null;//每小时天气状况line对象
+    private boolean hourlyRainPLineing=false;//标志位,true表示正在更新hourlyTempLine对象
 
 
-    private Weather(String cityname) {
-        this.cityname = cityname;
+
+
+
+    private Weather(String cityName) {
+        this.cityName = cityName;
     }
 
 
@@ -44,8 +52,8 @@ public class Weather implements Observer<Object>{
     }
 
     public String getCityName() {
-        if (cityname != null) {
-            return cityname;
+        if (cityName != null) {
+            return cityName;
         } else {
             return Config.DEF_CITY1;
         }
@@ -121,14 +129,35 @@ public class Weather implements Observer<Object>{
     }
 
 
-    public void updateHourlyTempLine(){
+    private void updateHourlyTempLine(){
         hourlyTempLineing=true;
-        WeatherObservable o=new WeatherObservable(this);
+        WeatherObservable o=new WeatherObservable(cityName);
         o.getWeatherLineDate().subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+                observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<Line>() {
+            @Override
+            public void accept(Line line) throws Exception {
+                setHourlyTempLine(line);//把返回的信息拿去更新下自身
+                hourlyTempLineing=false;
+            }
+        }).subscribe(this);
     }
 
-    public void setHourlyTempLine(Line line){
+    private void updateHourlyRainPLine() {
+        hourlyRainPLineing=true;
+
+        WeatherObservable o=new WeatherObservable(cityName);
+        o.getHourlyRainPLine().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<Line>() {
+            @Override
+            public void accept(Line line) throws Exception {
+                setHourlyRainPLine(line);
+                hourlyRainPLineing=false;
+            }
+        }).subscribe(this);
+
+    }
+
+    private void setHourlyTempLine(Line line){
         hourlyTempLine=line;
     }
 
@@ -140,6 +169,28 @@ public class Weather implements Observer<Object>{
             return hourlyTempLine;
         }
 
+    }
+
+    public Line getHourlyRainPLine(){
+        if (hourlyRainPLine==null&&!hourlyRainPLineing){
+            updateHourlyRainPLine();
+            return null;
+        }else {
+            return hourlyRainPLine;
+        }
+    }
+
+    private void setHourlyRainPLine(Line line){
+        hourlyRainPLine=line;
+    }
+
+
+    public void setColor(int color){
+        mColor=color;
+    }
+
+    public int getColor(){
+        return mColor;
     }
 
 
@@ -234,7 +285,7 @@ public class Weather implements Observer<Object>{
 
 
     public interface WeatherChangeListener{
-        void onWeatherChange(Weather weather);
+        void onWeatherChange(@NonNull Weather weather);
     }
 
 }

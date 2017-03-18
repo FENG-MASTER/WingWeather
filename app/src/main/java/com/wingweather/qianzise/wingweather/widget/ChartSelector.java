@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.StyleRes;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.wingweather.qianzise.wingweather.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,8 @@ public class ChartSelector extends AlertDialog {
     private Context mContext;
     private GridView.OnItemClickListener listenerTemp=null;
 
+    private List<Pair<Integer,String>> mList;
+
     public ChartSelector(Context context) {
         super(context);
         mContext=context;
@@ -54,6 +58,12 @@ public class ChartSelector extends AlertDialog {
         mContext=context;
     }
 
+
+    public void setData(List<Pair<Integer,String>> list){
+        mList=list;
+        setAdapter();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -66,17 +76,26 @@ public class ChartSelector extends AlertDialog {
     }
 
     private void initView(){
-
-        gridView.setAdapter(
-                new SimpleAdapter(
-                        mContext,getData(),R.layout.pop_item,
-                        new String[]{"img","name"},
-                        new int[]{R.id.iv_pop_item,R.id.tv_pop_item}));
+        setAdapter();
 
         if (listenerTemp!=null){
             setOnItemClickListener(listenerTemp);
             listenerTemp=null;
         }
+    }
+
+    private void setAdapter(){
+        if (gridView==null){
+            return;
+        }
+        gridView.setAdapter(
+                new SimpleAdapter(
+                        mContext,getData(),R.layout.pop_item,
+                        new String[]{"img","name"},
+                        new int[]{R.id.iv_pop_item,R.id.tv_pop_item}));
+        gridView.invalidate();
+
+
     }
 
     public void setOnItemClickListener(GridView.OnItemClickListener listener){
@@ -92,25 +111,18 @@ public class ChartSelector extends AlertDialog {
 
     private List<Map<String,Object>> getData(){
         List<Map<String,Object>> list=new ArrayList<>();
-        Map<String,Object> map1=new HashMap<>();
-        map1.put("img",R.drawable.fab_ico);
-        map1.put("name","每小时温度线性图");
-        list.add(map1);
 
-        Map<String,Object> map2=new HashMap<>();
-        map2.put("img",R.drawable.fab_ico);
-        map2.put("name","每天温度线性图");
-        list.add(map2);
+        Iterator<Pair<Integer,String>> iterator=mList.iterator();
 
-        Map<String,Object> map3=new HashMap<>();
-        map3.put("img",R.drawable.fab_ico);
-        map3.put("name","图表1");
-        list.add(map3);
+        Pair<Integer,String> temp;
+        while (iterator.hasNext()){
+            temp=iterator.next();
 
-        Map<String,Object> map4=new HashMap<>();
-        map4.put("img",R.drawable.fab_ico);
-        map4.put("name","图表1");
-        list.add(map4);
+            Map<String,Object> map1=new HashMap<>();
+            map1.put("img",temp.first);
+            map1.put("name",temp.second);
+            list.add(map1);
+        }
 
         return list;
     }

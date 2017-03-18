@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wingweather.qianzise.wingweather.R;
+import com.wingweather.qianzise.wingweather.base.Config;
+import com.wingweather.qianzise.wingweather.base.MyPreferences;
 import com.wingweather.qianzise.wingweather.model.Weather;
 
 import butterknife.ButterKnife;
@@ -64,6 +66,8 @@ public abstract class BaseWeatherFragment extends Fragment implements Weather.We
     private void setCities(){
         weather1=Weather.newInstance(cityName1);
         weather2=Weather.newInstance(cityName2);
+        weather1.setColor(MyPreferences.getInstance().getLineColor(0));
+        weather2.setColor(MyPreferences.getInstance().getLineColor(1));
 
         weather1.addWeatherChangeListener(this);
         weather2.addWeatherChangeListener(this);

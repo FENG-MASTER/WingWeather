@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import com.wingweather.qianzise.wingweather.App;
@@ -65,6 +66,18 @@ public class MyPreferences {
 
 
         return BitmapFactory.decodeStream(fileInputStream);
+    }
+
+    public int getLineColor(int index){
+        if (index>2||index<0){
+            try {
+                throw new Exception("index超出范围");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return index==1?Color.RED:Color.YELLOW;
+
     }
 
 
