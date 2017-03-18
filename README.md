@@ -5,13 +5,15 @@
 目前还在开发中.
 
 启动页:
-![](https://github.com/FENG-MASTER/WingWeather/blob/master/detail/splash.png)
+ <img src="https://github.com/FENG-MASTER/WingWeather/blob/master/detail/splash.png" width = "300" align=center />
+
 
 主页:
-![](https://github.com/FENG-MASTER/WingWeather/blob/master/detail/main.png)
+<img src="https://github.com/FENG-MASTER/WingWeather/blob/master/detail/main.png" width = "300" align=center />
+
 
 各种图表:
-![](https://github.com/FENG-MASTER/WingWeather/blob/master/detail/chartSelect.png)
+<img src="https://github.com/FENG-MASTER/WingWeather/blob/master/detail/chartSelect.png" width = "300" align=center />
 
 24小时温度对比
-![](https://github.com/FENG-MASTER/WingWeather/blob/master/detail/chart.png)
+<img src="https://github.com/FENG-MASTER/WingWeather/blob/master/detail/chart.png" width = "300" align=center />
