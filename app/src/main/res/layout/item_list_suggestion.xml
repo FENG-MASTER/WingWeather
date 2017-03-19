@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:padding="28dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_suggestion_name"
+            android:text="指数:"
+            android:textStyle="italic"
+            android:gravity="left|center"
+            android:textSize="17sp"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxLines="1"/>
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:gravity="center"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            hedgehog:clickable="false"
+            android:layout_height="match_parent"
+            hedgehog:starCount="5"
+            hedgehog:starImageHeight="30dp"
+            hedgehog:starImageWidth="30dp"
+            hedgehog:starEmpty="@drawable/progressbar_bg"
+            hedgehog:starFill="@drawable/progressbar_progress"
+        />
+        <View
+            android:background="?android:attr/listDivider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+
+        <TextView
+
+            android:id="@+id/tv_suggestion_index"
+            android:textStyle="bold"
+            android:text="很好"
+            android:gravity="bottom|left"
+            android:textSize="11sp"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_suggestion_detail"
+            android:text="白天天气晴好，您在这种天气条件下，会感觉早晚凉爽、舒适，午后偏热。"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

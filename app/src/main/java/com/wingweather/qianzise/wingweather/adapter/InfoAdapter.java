@@ -42,8 +42,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.weather1=weather1;
         this.weather2=weather2;
 
-        l1=weather1.getBaseInfo();
-        l2=weather2.getBaseInfo();
+        l1=weather1.getTodayBaseInfo();
+        l2=weather2.getTodayBaseInfo();
     }
 
 

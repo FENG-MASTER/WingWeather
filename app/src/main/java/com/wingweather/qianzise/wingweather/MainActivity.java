@@ -26,9 +26,7 @@ import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.roughike.bottombar.BottomBar;
 
-import com.roughike.bottombar.OnTabClickListener;
 import com.wingweather.qianzise.wingweather.activity.BaseActivity;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;

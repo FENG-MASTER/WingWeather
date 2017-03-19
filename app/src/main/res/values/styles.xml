@@ -24,4 +24,11 @@
     </style>
 
 
+    <style name="myratingbar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+    </style>
+
+
+
+
 </resources>

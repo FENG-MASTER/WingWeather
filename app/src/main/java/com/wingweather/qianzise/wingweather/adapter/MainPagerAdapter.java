@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
 import com.wingweather.qianzise.wingweather.fragment.BaseWeatherFragment;
 import com.wingweather.qianzise.wingweather.fragment.ChartFragment;
-import com.wingweather.qianzise.wingweather.fragment.OtherChartFragment;
-import com.wingweather.qianzise.wingweather.fragment.SideFragment;
+import com.wingweather.qianzise.wingweather.fragment.MainInfoFragment;
+import com.wingweather.qianzise.wingweather.fragment.OtherFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
 
-        BaseWeatherFragment fragment1=SideFragment.newInstance(
+        BaseWeatherFragment fragment1= MainInfoFragment.newInstance(
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 
@@ -33,7 +33,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 
-        BaseWeatherFragment fragment3= OtherChartFragment.newInstance(
+        BaseWeatherFragment fragment3= OtherFragment.newInstance(
                 MyPreferences.getInstance().getCityName1(),
                 MyPreferences.getInstance().getCityName2());
 

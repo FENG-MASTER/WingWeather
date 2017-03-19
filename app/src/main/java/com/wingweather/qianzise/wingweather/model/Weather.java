@@ -59,31 +59,34 @@ public class Weather implements Observer<Object>{
         }
     }
 
-    public String getTemperture_Now() {
+    public String getTemperture(int num) {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
 
         }
-        return mWeatherBean.getInfo().getNow().getTmp()+"°";
+        WeatherBean.infoBean.DailyForecastBean.TmpBean bean=
+                mWeatherBean.getInfo().getDaily_forecast().get(num).getTmp();
+        return (Integer.valueOf(bean.getMax())+Integer.valueOf(bean.getMin()))/2+"°";
     }
 
-    public String getConditionCode(){
+
+    public String getConditionCode(int num){
         if (mWeatherBean == null) {
             return "100";
 
         }
-        return mWeatherBean.getInfo().getNow().getCondition().getCode();
+        return mWeatherBean.getInfo().getDaily_forecast().get(num).getCond().getCode_d();
     }
 
-    public String getCondition() {
+    public String getCondition(int num) {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
 
         }
-        return mWeatherBean.getInfo().getNow().getCondition().getTxt();
+        return mWeatherBean.getInfo().getDaily_forecast().get(num).getCond().getTxt_d();
     }
 
-    public String getAQI() {
+    public String getAQI_now() {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
 
@@ -92,22 +95,29 @@ public class Weather implements Observer<Object>{
     }
 
 
-    public String getRainProbability() {
+    public String getRainProbability(int num) {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
         }
-        return mWeatherBean.getInfo().getDaily_forecast().get(0).getPop()+"%";
+        return mWeatherBean.getInfo().getDaily_forecast().get(num).getPop()+"%";
     }
 
-    public String getWindLevel() {
+    public String getWindLevel(int num) {
+        if (mWeatherBean == null) {
+            return App.getContext().getString(R.string.no_data);
+        }
+        return mWeatherBean.getInfo().getDaily_forecast().get(num).getWind().getSc();
+    }
+
+    public String getHum(int num){
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
         }
 
-        return mWeatherBean.getInfo().getDaily_forecast().get(0).getWind().getSc();
+        return mWeatherBean.getInfo().getDaily_forecast().get(num).getHum()+"%";
     }
 
-    public String getPM25() {
+    public String getPM25_now() {
         if (mWeatherBean == null) {
             return App.getContext().getString(R.string.no_data);
         }
@@ -124,15 +134,34 @@ public class Weather implements Observer<Object>{
 
 
 
-    public List<Pair<String, String>> getBaseInfo() {
+
+
+    public List<Pair<String, String>> getTodayBaseInfo() {
         List<Pair<String, String>> l = new ArrayList<>();
 
-        l.add(new Pair<>("温度", getTemperture_Now()));
-        l.add(new Pair<>("天气状况", getConditionCode()));
-        l.add(new Pair<>("空气状况", getAQI()));
-        l.add(new Pair<>("降水概率", getRainProbability()));
-        l.add(new Pair<>("风力", getWindLevel()));
-        l.add(new Pair<>("PM2.5", getPM25()));
+        l.add(new Pair<>("温度", getTemperture(0)));
+        l.add(new Pair<>("天气状况", getConditionCode(0)));
+        l.add(new Pair<>("相对湿度",getHum(0)));
+        l.add(new Pair<>("降水概率", getRainProbability(0)));
+        l.add(new Pair<>("风力", getWindLevel(0)));
+        l.add(new Pair<>("空气状况", getAQI_now()));
+        l.add(new Pair<>("PM2.5", getPM25_now()));
+        return l;
+    }
+
+
+
+
+    public List<Pair<String, String>> getNextDayBaseInfo() {
+        List<Pair<String, String>> l = new ArrayList<>();
+
+        l.add(new Pair<>("温度", getTemperture(1)));
+        l.add(new Pair<>("天气状况", getConditionCode(1)));
+        l.add(new Pair<>("相对湿度",getHum(1)));
+        l.add(new Pair<>("降水概率", getRainProbability(1)));
+        l.add(new Pair<>("风力", getWindLevel(1)));
+        l.add(new Pair<>("PM2.5", getPM25_now()));
+        l.add(new Pair<>("空气状况", getAQI_now()));
         return l;
     }
 
@@ -295,5 +324,6 @@ public class Weather implements Observer<Object>{
     public interface WeatherChangeListener{
         void onWeatherChange(@NonNull Weather weather);
     }
+
 
 }
