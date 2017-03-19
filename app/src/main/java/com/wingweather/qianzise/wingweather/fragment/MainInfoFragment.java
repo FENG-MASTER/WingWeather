@@ -52,8 +52,7 @@ public class MainInfoFragment extends BaseWeatherFragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL
-//        ));
+
 
     }
 

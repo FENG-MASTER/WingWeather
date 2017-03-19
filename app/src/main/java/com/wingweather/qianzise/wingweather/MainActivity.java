@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         navigationBar
                 .addItem(new BottomNavigationItem(R.drawable.line_chart, "主页"))
                 .addItem(new BottomNavigationItem(R.drawable.chart_select, "图表").setInactiveIconResource(R.drawable.delicious).setActiveColor(Color.RED))
-                .addItem(new BottomNavigationItem(R.drawable.doughnut_chart, "其他"))
+                .addItem(new BottomNavigationItem(R.drawable.doughnut_chart, "生活指数"))
                 .initialise();
 
 

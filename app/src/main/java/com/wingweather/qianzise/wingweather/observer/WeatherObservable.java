@@ -40,7 +40,6 @@ public class WeatherObservable {
                     @Override
                     public void onReceive(WeatherBean weatherBean) {
                         e.onNext(weatherBean);
-
                     }
                 });
             }

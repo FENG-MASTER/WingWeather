@@ -24,23 +24,17 @@ import butterknife.BindView;
 public class OtherFragment extends BaseWeatherFragment {
     @BindView(R.id.rc_list_suggestion)
     RecyclerView recyclerView;
-    List<Suggestion> l=new ArrayList<>();
 
     @Override
     public void initViewAfterBind() {
-        l.add(new Suggestion("1","2","3"));
-        l.add(new Suggestion("1","2","3"));
-        l.add(new Suggestion("1","2","3"));
-        l.add(new Suggestion("1","2","3"));
-
-        recyclerView.setAdapter(new SuggestionAdapter(getContext(),l));
+        if (weather1.getSuggestions()!=null){
+            recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions()));
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL
-        ));
 
     }
 
@@ -61,6 +55,6 @@ public class OtherFragment extends BaseWeatherFragment {
 
     @Override
     public void onWeatherChange(Weather weather) {
-
+        recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather.getSuggestions()));
     }
 }
