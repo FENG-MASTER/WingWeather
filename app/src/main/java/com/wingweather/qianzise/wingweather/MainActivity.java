@@ -1,26 +1,21 @@
 package com.wingweather.qianzise.wingweather;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -32,11 +27,13 @@ import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
 import com.wingweather.qianzise.wingweather.base.Config;
 import com.wingweather.qianzise.wingweather.base.MyPreferences;
-import com.wingweather.qianzise.wingweather.observer.BusAction;
+import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
+import com.wingweather.qianzise.wingweather.util.Util;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,7 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView(savedInstanceState);
-
+        AvaterControl control=new AvaterControl();
     }
 
     private void initView(Bundle savedInstanceState){
@@ -183,7 +180,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
                     break;
                 case Config.CODE_ZOOM_IMAGE:
                     //缩放过后
-                    setImageToView(getBitmapFromIntent(data));
+                    setImageToView(Util.getBitmapFromIntent(data));
 
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
@@ -215,14 +212,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     }
 
 
-    private Bitmap getBitmapFromIntent(Intent intent){
-        Bundle bundle=intent.getExtras();
-        Bitmap bitmap=null;
-        if (bundle!=null){
-            bitmap=bundle.getParcelable("data");
-        }
-        return bitmap;
-    }
 
     /**
      * 设置菜单根据滚动动态显示和隐藏
@@ -233,7 +222,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if ((Math.abs(verticalOffset)+10 >= appBarLayout.getTotalScrollRange())){
                     //滑动到顶了,这个时候应该取消右上角菜单的按钮显示
-
                     isVisibleForMenu =false;
                     invalidateOptionsMenu();
                 }else {
@@ -277,13 +265,12 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-//                bottomBar.selectTabAtPosition(position,true);
                 bottomBar.selectTab(position,false);
+                Log.e("my","onPageSelected");
             }
 
             @Override
@@ -292,15 +279,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
             }
         });
 
-    }
-
-    private static int lastPress=0;
-    private void selected(int pos){
-        if (lastPress==pos){
-            EventBus.getDefault().post(new TabRePressEvent(pos));
-        }else {
-            lastPress=pos;
-        }
     }
 
 
@@ -341,18 +319,11 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
 
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-      //  mBottomBar.onSaveInstanceState(outState);
-    }
-
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -360,6 +331,66 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         public int pos;
         public TabRePressEvent(int pos){
             this.pos=pos;
+        }
+    }
+
+    public class AvaterControl{
+        private int suggestionIndex;
+
+        public AvaterControl(){
+            EventBus.getDefault().register(this);
+
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position!=2){
+                        showAvater(-1);
+                    }else {
+                        showAvater(suggestionIndex);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+
+        public void showAvater(int n) {
+
+            switch (n) {
+                case Config.LEFT:
+                    leftAvatar.animate().alpha(1).setDuration(500).start();
+                    rightAvatar.animate().alpha(0).setDuration(500).start();
+                    break;
+                case Config.RIGHT:
+                    leftAvatar.animate().alpha(0).setDuration(500).start();
+                    rightAvatar.animate().alpha(1).setDuration(500).start();
+                    break;
+                default:
+                    leftAvatar.animate().alpha(1).setDuration(500).start();
+                    rightAvatar.animate().alpha(1).setDuration(500).start();
+            }
+        }
+
+
+        @Subscribe
+        public void alterAvater(SuggestionChangeAction a){
+            suggestionIndex=a.getIndex();
+            if (navigationBar.getCurrentSelectedPosition()==2){
+                showAvater(a.getIndex());
+
+            }else {
+                leftAvatar.animate().alpha(1).setDuration(500).start();
+                rightAvatar.animate().alpha(1).setDuration(500).start();
+            }
+
         }
     }
 

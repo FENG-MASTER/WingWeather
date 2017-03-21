@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.adapter.DividerItemDecoration;
@@ -11,6 +12,9 @@ import com.wingweather.qianzise.wingweather.adapter.InfoAdapter;
 import com.wingweather.qianzise.wingweather.adapter.SuggestionAdapter;
 import com.wingweather.qianzise.wingweather.model.Suggestion;
 import com.wingweather.qianzise.wingweather.model.Weather;
+import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created by qianzise on 2017/3/14 0014.
+ *
  */
 
 public class OtherFragment extends BaseWeatherFragment {
@@ -27,8 +31,11 @@ public class OtherFragment extends BaseWeatherFragment {
 
     @Override
     public void initViewAfterBind() {
-        if (weather1.getSuggestions()!=null){
-            recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions()));
+
+        if (weather1.getSuggestions()!=null&&weather2.getSuggestions()!=null){
+            recyclerView.setAdapter(
+                    new SuggestionAdapter(
+                            getContext(),weather1.getSuggestions(),weather2.getSuggestions()));
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -55,6 +62,8 @@ public class OtherFragment extends BaseWeatherFragment {
 
     @Override
     public void onWeatherChange(Weather weather) {
-        recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather.getSuggestions()));
+        if (weather1.getSuggestions()!=null&&weather2.getSuggestions()!=null){
+            recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions(),weather2.getSuggestions()));
+        }
     }
 }

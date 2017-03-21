@@ -21,8 +21,6 @@ public final class Config {
     public final static int CODE_MAIN_IMAGE=3;
     public final static int CODE_ZOOM_IMAGE=4;
 
-    public static class ChartType{
-        public static final int Hourly_Temp_Line=1;
-        public static final int Daily_Temp_Line=2;
-    }
+    public static final int LEFT=0;//代表了左头像
+    public static final int RIGHT=1;//代表了右头像
 }

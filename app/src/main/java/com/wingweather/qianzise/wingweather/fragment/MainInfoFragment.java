@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.adapter.DividerItemDecoration;
 import com.wingweather.qianzise.wingweather.adapter.InfoAdapter;
 import com.wingweather.qianzise.wingweather.model.Weather;
 
@@ -41,7 +40,7 @@ public class MainInfoFragment extends BaseWeatherFragment {
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_side;
+        return R.layout.fragment_base_info;
     }
 
 

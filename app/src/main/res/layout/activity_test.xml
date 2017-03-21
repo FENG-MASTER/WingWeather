@@ -3,19 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     >
-
 
    <LinearLayout
 
        android:layout_width="match_parent"
-       android:layout_height="200dp">
+       android:layout_height="wrap_content">
       <ImageView
+          android:id="@+id/test_img"
           android:src="@drawable/dva"
           android:scaleType="fitXY"
           android:layout_width="match_parent"
-          android:layout_height="510dp"/>
+          android:layout_height="wrap_content"/>
 
    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

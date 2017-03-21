@@ -1,6 +1,9 @@
 package com.wingweather.qianzise.wingweather.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
@@ -49,5 +52,16 @@ public class Util {
         }
         return calendar.get(Calendar.HOUR_OF_DAY);
 
+    }
+
+
+
+    public static Bitmap getBitmapFromIntent(Intent intent){
+        Bundle bundle=intent.getExtras();
+        Bitmap bitmap=null;
+        if (bundle!=null){
+            bitmap=bundle.getParcelable("data");
+        }
+        return bitmap;
     }
 }
