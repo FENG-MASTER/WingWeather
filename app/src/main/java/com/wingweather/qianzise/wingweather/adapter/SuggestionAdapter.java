@@ -120,7 +120,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
 
         public void showNextWithAnime(final int num){
 
-            bg.animate().setDuration(1000).alpha(0).setListener(new Animator.AnimatorListener() {
+            bg.animate().setDuration(500).setInterpolator(new DecelerateInterpolator()).alpha(0).setListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
 
@@ -130,7 +130,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
                 public void onAnimationEnd(Animator animation) {
                     show(num);
                     bg.animate().setListener(null);
-                    bg.animate().setDuration(1000).alpha(1).start();
+                    bg.animate().setDuration(500).alpha(1).start();
                 }
 
                 @Override

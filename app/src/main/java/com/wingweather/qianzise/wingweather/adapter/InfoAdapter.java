@@ -34,16 +34,23 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Weather weather1;
     private Weather weather2;
 
-    private List<Pair<String,String>> l1;
-    private List<Pair<String,String>> l2;
+    private List<Pair<String,String>> nowList1;
+    private List<Pair<String,String>> nowList2;
+
+    private List<Pair<String,String>> nextList1;
+    private List<Pair<String,String>> nextList2;
+
 
     public InfoAdapter(Context context, Weather weather1,Weather weather2) {
         this.context=context;
         this.weather1=weather1;
         this.weather2=weather2;
 
-        l1=weather1.getTodayBaseInfo();
-        l2=weather2.getTodayBaseInfo();
+        nowList1 =weather1.getTodayBaseInfo();
+        nowList2 =weather2.getTodayBaseInfo();
+
+        nextList1=weather1.getNextDayBaseInfo();
+        nextList2=weather2.getNextDayBaseInfo();
     }
 
 
@@ -66,18 +73,23 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof BaseHolder){
             BaseHolder baseHolder=(BaseHolder)holder;
 
-            baseHolder.setLeft(l1.get(position).second);
-            if (l1.get(position).first.equals(l2.get(position).first)){
-                baseHolder.setTitle(l1.get(position).first);
+            baseHolder.setLeft(nowList1.get(position).second);
+            baseHolder.setLeft_next(nextList1.get(position).second);
+            if (nowList1.get(position).first.equals(nowList2.get(position).first)){
+                baseHolder.setTitle(nowList1.get(position).first);
             }
-            baseHolder.setRight(l2.get(position).second);
+            baseHolder.setRight_next(nextList2.get(position).second);
+            baseHolder.setRight(nowList2.get(position).second);
+
+
+
 
         }else if (holder instanceof ImageHolder){
             final ImageHolder imageHolder=(ImageHolder)holder;
-            if (l1.get(position).first.equals(l2.get(position).first)){
-                imageHolder.setTitle(l1.get(position).first);
+            if (nowList1.get(position).first.equals(nowList2.get(position).first)){
+                imageHolder.setTitle(nowList1.get(position).first);
             }
-            WeatherObservable.getWeatherConDrawable(l1.get(position).second).
+            WeatherObservable.getWeatherConDrawable(nowList1.get(position).second).
                     subscribeOn(Schedulers.io()).
                     observeOn(AndroidSchedulers.mainThread()).
                     subscribe(new Consumer<Drawable>() {
@@ -87,7 +99,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         }
                     });
 
-            WeatherObservable.getWeatherConDrawable(l2.get(position).second).
+            WeatherObservable.getWeatherConDrawable(nowList2.get(position).second).
                     subscribeOn(Schedulers.io()).
                     observeOn(AndroidSchedulers.mainThread()).
                     subscribe(new Consumer<Drawable>() {
@@ -120,7 +132,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return l1.size();
+        return nowList1.size();
     }
 
 
@@ -140,8 +152,14 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView left;
         @BindView(R.id.tv_info_right)
         TextView right;
+
         @BindView(R.id.tv_info_title)
         TextView title;
+
+        @BindView(R.id.tv_info_left_next_day)
+        TextView left_next;
+        @BindView(R.id.tv_info_right_next_day)
+        TextView right_next;
 
         public BaseHolder(View itemView) {
             super(itemView);
@@ -158,6 +176,14 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setTitle(String s){
             title.setText(s);
+        }
+
+        public void setLeft_next(String s){
+            left_next.setText(s);
+        }
+
+        public void setRight_next(String s){
+            right_next.setText(s);
         }
 
     }

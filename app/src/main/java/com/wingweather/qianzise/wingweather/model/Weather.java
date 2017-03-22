@@ -153,8 +153,9 @@ public class Weather implements Observer<Object> {
         l.add(new Pair<>("相对湿度", getHum(1)));
         l.add(new Pair<>("降水概率", getRainProbability(1)));
         l.add(new Pair<>("风力", getWindLevel(1)));
-        l.add(new Pair<>("PM2.5", getPM25_now()));
         l.add(new Pair<>("空气状况", getAQI_now()));
+        l.add(new Pair<>("PM2.5", getPM25_now()));
+
         return l;
     }
 

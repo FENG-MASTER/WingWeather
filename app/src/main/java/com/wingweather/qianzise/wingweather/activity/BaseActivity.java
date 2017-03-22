@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.wingweather.qianzise.wingweather.R;
 
 /**
- * Created by qianzise on 2017/3/18 0018.
+ * 基础activity,现在暂时没啥大用
  */
 
 public class BaseActivity extends AppCompatActivity {

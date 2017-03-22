@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/tv_info_left_next_day"
             android:textStyle="italic"
             android:text="19°"
             android:textColor="@color/gray"
@@ -60,6 +61,7 @@
 
 
         <TextView
+            android:id="@+id/tv_info_right_next_day"
             android:textColor="@color/gray"
             android:text="19°"
             android:textStyle="italic"
