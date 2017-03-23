@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<!--必须加个ScrollView 不然view点击的时候会抖动 TODO:原因不明-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="500dp">
 
-    <com.wingweather.qianzise.wingweather.view.WarpContentHeightRecyclerView
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rc_list_suggestion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.wingweather.qianzise.wingweather.view.WarpContentHeightRecyclerView>
-
-    </ScrollView>
-</FrameLayout>
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>

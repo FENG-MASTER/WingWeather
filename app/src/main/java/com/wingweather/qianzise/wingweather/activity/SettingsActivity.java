@@ -4,15 +4,12 @@ package com.wingweather.qianzise.wingweather.activity;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.base.Config;
+import com.wingweather.qianzise.wingweather.util.Config;
 
 
 public class SettingsActivity extends BaseActivity {

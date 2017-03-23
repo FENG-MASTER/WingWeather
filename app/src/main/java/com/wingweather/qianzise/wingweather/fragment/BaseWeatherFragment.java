@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.base.Config;
-import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.model.Weather;
 
 import butterknife.ButterKnife;

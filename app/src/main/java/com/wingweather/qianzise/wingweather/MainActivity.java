@@ -25,8 +25,8 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.wingweather.qianzise.wingweather.activity.BaseActivity;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
-import com.wingweather.qianzise.wingweather.base.Config;
-import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.util.Config;
+import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
 import com.wingweather.qianzise.wingweather.util.Util;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
@@ -270,7 +270,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
             @Override
             public void onPageSelected(int position) {
                 bottomBar.selectTab(position,false);
-                Log.e("my","onPageSelected");
             }
 
             @Override
@@ -280,6 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         });
 
     }
+
 
 
     @Override

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <com.wingweather.qianzise.wingweather.view.WrapContentHeightViewPager
             tools:context="com.wingweather.qianzise.wingweather.MainActivity"
@@ -11,6 +14,6 @@
             android:layout_height="match_parent">
 
         </com.wingweather.qianzise.wingweather.view.WrapContentHeightViewPager>
-</merge>
+</LinearLayout>
 
 

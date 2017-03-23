@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by qianzise on 2017/3/2 0002.
+ * 
  */
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -34,7 +34,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         setOrientation(orientation);
     }
 
-    public void setOrientation( int orientation) {
+    public void setOrientation(int orientation) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
             throw new IllegalArgumentException( "invalid orientation");
         }

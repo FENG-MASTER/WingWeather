@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.fragment.BaseWeatherFragment;
 import com.wingweather.qianzise.wingweather.fragment.ChartFragment;
 import com.wingweather.qianzise.wingweather.fragment.MainInfoFragment;
@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ *主页面的viewpager的适配器
+ * 包含了三个页面
  */
 
 public class MainPagerAdapter extends FragmentPagerAdapter {

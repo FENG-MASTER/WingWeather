@@ -15,11 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.util.MyPreferences;
 
 /**
  * 自定义view,继承的子类都会具有切换图片后自动保存的功能

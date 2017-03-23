@@ -1,32 +1,20 @@
 package com.wingweather.qianzise.wingweather.adapter;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
-import android.animation.FloatEvaluator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.ViewPropertyAnimator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hedgehog.ratingbar.RatingBar;
-import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.base.Config;
+import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.model.Suggestion;
-import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,7 +25,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
 
 /**
  * 生活指数显示用的适配器

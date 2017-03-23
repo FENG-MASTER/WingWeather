@@ -6,7 +6,7 @@
               android:padding="28dp"
               android:background="@drawable/item_list_bg"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="horizontal"

@@ -1,4 +1,4 @@
-package com.wingweather.qianzise.wingweather.base;
+package com.wingweather.qianzise.wingweather.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

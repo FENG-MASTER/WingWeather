@@ -6,7 +6,7 @@ import android.util.Pair;
 
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
-import com.wingweather.qianzise.wingweather.base.Config;
+import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
 

@@ -23,21 +23,24 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by qianzise on 2017/3/2 0002.
+ * @see com.wingweather.qianzise.wingweather.fragment.MainInfoFragment
+ *
+ * 基础天气信息适配器
+ * 有两种布局item
  */
 
 public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final int TYPE_base=1;
-    public static final int TYPE_with_image=2;
+    public static final int TYPE_base=1;             //第一种布局
+    public static final int TYPE_with_image=2;       //第二种布局,带图片显示
 
     private Context context;
     private Weather weather1;
     private Weather weather2;
 
-    private List<Pair<String,String>> nowList1;
+    private List<Pair<String,String>> nowList1;//今天天气情况
     private List<Pair<String,String>> nowList2;
 
-    private List<Pair<String,String>> nextList1;
+    private List<Pair<String,String>> nextList1;//明天天气情况
     private List<Pair<String,String>> nextList2;
 
 
@@ -46,24 +49,27 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.weather1=weather1;
         this.weather2=weather2;
 
-        nowList1 =weather1.getTodayBaseInfo();
+        nowList1 =weather1.getTodayBaseInfo();//获取天气情况
         nowList2 =weather2.getTodayBaseInfo();
 
-        nextList1=weather1.getNextDayBaseInfo();
+        nextList1=weather1.getNextDayBaseInfo();//获取天气情况
         nextList2=weather2.getNextDayBaseInfo();
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType){//判断下是哪个类型的
             case TYPE_base:
+                //基础类型
                 return createBaseHolder(parent);
 
             case TYPE_with_image:
+                //带图的类型
                 return createImageHolder(parent);
 
             default:
+                //默认用基础类型
                 return createBaseHolder(parent);
         }
     }
@@ -114,12 +120,22 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
+    /**
+     * 基础holder生成
+     * @param parent 生成新布局的时候用的父view
+     * @return holder
+     */
     private BaseHolder createBaseHolder(ViewGroup parent){
         View view= LayoutInflater.from(context).inflate(R.layout.item_list_base_info,parent,false);
         BaseHolder baseHolder =new BaseHolder(view);
         return baseHolder;
     }
 
+    /**
+     * 如上,带图版本而已
+     * @param parent 生成新布局的时候用的父view
+     * @return holder
+     */
     private ImageHolder createImageHolder(ViewGroup parent){
         View view= LayoutInflater.from(context).inflate(R.layout.item_list_image_info,parent,false);
         ImageHolder holder =new ImageHolder(view);

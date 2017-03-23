@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.wingweather.qianzise.wingweather.App;
-import com.wingweather.qianzise.wingweather.base.MyPreferences;
+import com.wingweather.qianzise.wingweather.util.MyPreferences;
 
 /**
  * Created by qianzise on 2017/3/16 0016.
