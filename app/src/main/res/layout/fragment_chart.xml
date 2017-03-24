@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     >
+
         <FrameLayout
 
             android:id="@+id/fl_chart"

@@ -6,9 +6,14 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +30,10 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.wingweather.qianzise.wingweather.activity.BaseActivity;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.adapter.MainPagerAdapter;
+import com.wingweather.qianzise.wingweather.fragment.BaseWeatherFragment;
+import com.wingweather.qianzise.wingweather.fragment.ChartFragment;
+import com.wingweather.qianzise.wingweather.fragment.MainInfoFragment;
+import com.wingweather.qianzise.wingweather.fragment.OtherFragment;
 import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
@@ -35,6 +44,9 @@ import com.wingweather.qianzise.wingweather.view.CircleImageView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -43,8 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     Toolbar toolbar;
     @BindView(R.id.ctl_main)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.vp_main)
-    ViewPager viewPager;
+
     @BindView(R.id.ll_top_image_content)
     LinearLayout linearLayout;
     @BindView(R.id.appBarLayout)
@@ -64,36 +75,35 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     @BindView(R.id.ci_right)
     CircleImageView rightAvatar;
 
-    @BindView(R.id.bottom_navigation_bar)
-    BottomNavigationBar navigationBar;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.nv_main)
+    NavigationView navigationView;
+    private List<BaseWeatherFragment> fragments=new ArrayList<>();
+    private int currentFragmentIndex=0;
 
     private int imageViewSetting=0;
 
     private boolean isVisibleForMenu =true;//标志位,决定是否显示菜单
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initView(savedInstanceState);
+        initFragment();
+        initNav();
         AvaterControl control=new AvaterControl();
     }
 
     private void initView(Bundle savedInstanceState){
         ButterKnife.bind(this);
 
-        navigationBar
-                .addItem(new BottomNavigationItem(R.drawable.line_chart, "主页"))
-                .addItem(new BottomNavigationItem(R.drawable.chart_select, "图表").setInactiveIconResource(R.drawable.delicious).setActiveColor(Color.RED))
-                .addItem(new BottomNavigationItem(R.drawable.doughnut_chart, "生活指数"))
-                .initialise();
-
-
         setSupportActionBar(toolbar);
         setTitle(" ");
 
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-        viewPager.setOffscreenPageLimit(2);
-        bindViewPagerWitBottomBar(viewPager,navigationBar);
+
 
 
         setDynamicMenu();
@@ -236,50 +246,72 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
     }
 
-    /**
-     * 由于没有提供接口,只能自己把viewpager和bottombar的选择转换上做个一一对应的绑定
-     * @param viewPager v
-     * @param bottomBar b
-     */
-    private void bindViewPagerWitBottomBar(final ViewPager viewPager, final BottomNavigationBar bottomBar){
 
-        bottomBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
+
+
+    private void initNav(){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(int position) {
-                if (position>=0&&position<MainPagerAdapter.COUNT){
-                    viewPager.setCurrentItem(position,true);
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_item_main:
+                        showFragment(0);
+                        return true;
+                    case R.id.menu_item_chart:
+                        showFragment(1);
+                        return true;
+                    case R.id.menu_item_other:
+                        showFragment(2);
+                        return true;
+                    default:
+                        return false;
                 }
             }
-
-            @Override
-            public void onTabUnselected(int position) {
-
-            }
-
-            @Override
-            public void onTabReselected(int position) {
-                EventBus.getDefault().post(new TabRePressEvent(position));
-            }
         });
+    }
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    private void showFragment(int i) {
+        if (i>=fragments.size()){
+            return;
+        }
+        if (i!=currentFragmentIndex){
+            Fragment from=fragments.get(currentFragmentIndex);
+            Fragment to=fragments.get(i);
+
+            FragmentManager fragmentManager=getSupportFragmentManager();
+            FragmentTransaction transaction=fragmentManager.beginTransaction();
+//            transaction.setCustomAnimations();
+            if (to.isAdded()){
+                transaction.hide(from).show(to).commit();
+            }else {
+                transaction.add(R.id.fl_content,to).hide(from).commit();
             }
 
-            @Override
-            public void onPageSelected(int position) {
-                bottomBar.selectTab(position,false);
-            }
+        }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        currentFragmentIndex=i;
+        drawerLayout.closeDrawers();
 
     }
 
+    private void initFragment(){
+        fragments.clear();
+
+        BaseWeatherFragment fragment1= MainInfoFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        BaseWeatherFragment fragment2= ChartFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        BaseWeatherFragment fragment3= OtherFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        fragments.add(fragment1);
+        fragments.add(fragment2);
+        fragments.add(fragment3);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_content,fragment1).commit();
+    }
 
 
     @Override
@@ -340,26 +372,8 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         public AvaterControl(){
             EventBus.getDefault().register(this);
 
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                }
 
-                @Override
-                public void onPageSelected(int position) {
-                    if (position!=2){
-                        showAvater(-1);
-                    }else {
-                        showAvater(suggestionIndex);
-                    }
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
         }
 
         public void showAvater(int n) {
@@ -383,7 +397,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         @Subscribe
         public void alterAvater(SuggestionChangeAction a){
             suggestionIndex=a.getIndex();
-            if (navigationBar.getCurrentSelectedPosition()==2){
+            if (currentFragmentIndex==2){
                 showAvater(a.getIndex());
 
             }else {
