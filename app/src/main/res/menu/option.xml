@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/item_setting" android:title="@string/setting"/>
-    <item android:id="@+id/item_change_main_image" android:title="@string/change_main_image"/>
-    <item android:id="@+id/item_exit" android:title="@string/exit"/>
+    <item android:id="@+id/item_select" android:title="选择图表"/>
 </menu>

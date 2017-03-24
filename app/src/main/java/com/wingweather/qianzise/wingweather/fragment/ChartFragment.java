@@ -2,6 +2,9 @@ package com.wingweather.qianzise.wingweather.fragment;
 
 import android.os.Bundle;
 import android.support.v4.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -9,10 +12,12 @@ import android.widget.FrameLayout;
 
 import com.wingweather.qianzise.wingweather.MainActivity;
 import com.wingweather.qianzise.wingweather.R;
+import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
 import com.wingweather.qianzise.wingweather.chart.HourlyRainPChartPresenter;
 import com.wingweather.qianzise.wingweather.chart.HourlyTemperatureChartPresenter;
 import com.wingweather.qianzise.wingweather.chart.IChartPresenter;
 import com.wingweather.qianzise.wingweather.model.Weather;
+import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.widget.ChartSelector;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,14 +54,13 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
 
     @Override
     public void initViewAfterBind() {
-
+        setHasOptionsMenu(true);
         iChartPresenterList.add(new HourlyTemperatureChartPresenter());
         iChartPresenterList.add(new HourlyRainPChartPresenter());
 
         selector=new ChartSelector(getContext(),R.style.dialog);
         selector.setData(presentersToSelectorData());
         selector.setOnItemClickListener(this);
-        EventBus.getDefault().register(this);
 
         presenter=iChartPresenterList.get(0);
         presenter.initView(frameLayout,weather1,weather2);
@@ -79,14 +83,12 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void tabRePress(MainActivity.TabRePressEvent event){
-        if (event.pos==1){
-            if (selector.isShowing()){
-                selector.dismiss();
-            }else {
-                selector.show();
-            }
+
+    public void showSelect(){
+        if (selector.isShowing()){
+            selector.dismiss();
+        }else {
+            selector.show();
         }
     }
 
@@ -108,5 +110,30 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
         presenter=iChartPresenterList.get(position%iChartPresenterList.size());
         presenter.initView(frameLayout,weather1,weather2);
         selector.dismiss();
+    }
+
+
+
+
+    /**
+     * 动态创建个菜单选项
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.option,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_select:
+                showSelect();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

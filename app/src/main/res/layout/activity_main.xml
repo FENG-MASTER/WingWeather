@@ -24,7 +24,7 @@
                 app:contentScrim="@color/colorToolBarMin"
                 app:titleEnabled="false"
                 android:clipChildren="false"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -48,18 +48,6 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <!--<android.support.v4.widget.NestedScrollView-->
-            <!--android:id="@+id/fl_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-            <!--android:layout_height="wrap_content">-->
-
-
-
-
-        <!--</android.support.v4.widget.NestedScrollView>-->
-
-
         <FrameLayout
             android:id="@+id/fl_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -74,8 +62,8 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nv_main"
-        app:menu="@menu/bottom"
-        android:background="#11000000"
+        app:menu="@menu/nav"
+        android:background="#66FFFFFF"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:layout_width="wrap_content"

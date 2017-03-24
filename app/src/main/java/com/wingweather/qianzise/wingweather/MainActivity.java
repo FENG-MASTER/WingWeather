@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
 import com.wingweather.qianzise.wingweather.activity.BaseActivity;
 import com.wingweather.qianzise.wingweather.activity.SettingsActivity;
@@ -84,8 +81,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
     private int imageViewSetting=0;
 
-    private boolean isVisibleForMenu =true;//标志位,决定是否显示菜单
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +99,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         setTitle(" ");
 
 
-
-
-        setDynamicMenu();
         setCitesName();
         setImageListener();
     }
@@ -223,36 +215,12 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
 
 
-    /**
-     * 设置菜单根据滚动动态显示和隐藏
-     */
-    private void setDynamicMenu(){
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if ((Math.abs(verticalOffset)+10 >= appBarLayout.getTotalScrollRange())){
-                    //滑动到顶了,这个时候应该取消右上角菜单的按钮显示
-                    isVisibleForMenu =false;
-                    invalidateOptionsMenu();
-                }else {
-                    if(!isVisibleForMenu){
-                        isVisibleForMenu =true;
-                        invalidateOptionsMenu();
-                    }
-                }
-            }
-        });
-
-
-    }
-
-
-
 
     private void initNav(){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                drawerLayout.closeDrawers();
                 switch (item.getItemId()){
                     case R.id.menu_item_main:
                         showFragment(0);
@@ -262,6 +230,16 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
                         return true;
                     case R.id.menu_item_other:
                         showFragment(2);
+                        return true;
+                    case R.id.menu_item_setting:
+                        //打开设置
+                        startActivity(SettingsActivity.class);
+                        return true;
+                    case R.id.menu_item_change_main_image:
+                        sentOpenImageIntent(Config.CODE_MAIN_IMAGE);
+                        return true;
+                    case R.id.menu_item_exit:
+                        finish();
                         return true;
                     default:
                         return false;
@@ -290,7 +268,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         }
 
         currentFragmentIndex=i;
-        drawerLayout.closeDrawers();
+
 
     }
 
@@ -312,43 +290,6 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
         getSupportFragmentManager().beginTransaction().add(R.id.fl_content,fragment1).commit();
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.item_setting:
-                //打开设置
-                startActivity(SettingsActivity.class);
-                break;
-            case R.id.item_change_main_image:
-                sentOpenImageIntent(Config.CODE_MAIN_IMAGE);
-                break;
-            case R.id.item_exit:
-                //退出程序
-                finish();
-                break;
-            default:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    /**
-     * 动态创建个菜单选项
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();//清除下菜单才行,不然会出现很多个
-        if (isVisibleForMenu){
-            getMenuInflater().inflate(R.menu.option,menu);
-            return true;
-
-        }else {
-            return super.onPrepareOptionsMenu(menu);
-        }
-    }
-
 
 
 

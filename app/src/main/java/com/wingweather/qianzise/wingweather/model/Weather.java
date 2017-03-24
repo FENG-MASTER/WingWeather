@@ -132,6 +132,9 @@ public class Weather implements Observer<Object> {
 
 
     public List<Pair<String, String>> getTodayBaseInfo() {
+        if (mWeatherBean==null){
+            updateBaseInfo();
+        }
         List<Pair<String, String>> l = new ArrayList<>();
 
         l.add(new Pair<>("温度", getTemperture(0)));
@@ -146,6 +149,9 @@ public class Weather implements Observer<Object> {
 
 
     public List<Pair<String, String>> getNextDayBaseInfo() {
+        if (mWeatherBean==null){
+            updateBaseInfo();
+        }
         List<Pair<String, String>> l = new ArrayList<>();
 
         l.add(new Pair<>("温度", getTemperture(1)));

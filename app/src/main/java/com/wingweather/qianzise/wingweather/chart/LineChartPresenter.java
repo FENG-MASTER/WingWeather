@@ -79,7 +79,7 @@ public abstract class LineChartPresenter extends IChartPresenter {
         data.setAxisYLeft(axisY);
 
 //        Viewport viewport=chartView.getCurrentViewport();
-//        viewport.bottom=0;
+//        viewport.nav=0;
 //        viewport.top=3;
 //        chartView.setCurrentViewport(viewport);
         // Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
