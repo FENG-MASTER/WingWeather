@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -299,21 +300,23 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         EventBus.getDefault().unregister(this);
     }
 
-
-    public static class TabRePressEvent{
-        public int pos;
-        public TabRePressEvent(int pos){
-            this.pos=pos;
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers();
+        }else {
+            super.onBackPressed();
         }
+
     }
 
+    /**
+     * 控制头像显示的内部类
+     */
     public class AvaterControl{
-        private int suggestionIndex;
 
         public AvaterControl(){
             EventBus.getDefault().register(this);
-
-
 
         }
 
@@ -337,15 +340,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
         @Subscribe
         public void alterAvater(SuggestionChangeAction a){
-            suggestionIndex=a.getIndex();
-            if (currentFragmentIndex==2){
-                showAvater(a.getIndex());
-
-            }else {
-                leftAvatar.animate().alpha(1).setDuration(500).start();
-                rightAvatar.animate().alpha(1).setDuration(500).start();
-            }
-
+            showAvater(a.getIndex());
         }
     }
 

@@ -40,6 +40,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
         this.suggestionList1 = l1;
         this.suggestionList2 = l2;
         mContext = context;
+        EventBus.getDefault().post(new SuggestionChangeAction(0));
     }
 
 
@@ -135,6 +136,9 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
 
         @Subscribe
         public void play(SuggestionChangeAction action){
+            if (action.getIndex()<0||action.getIndex()>2){
+                return;
+            }
             showNextWithAnime(action.getIndex());
         }
 

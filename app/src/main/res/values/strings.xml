@@ -1,4 +1,4 @@
-<resources>
+<resources >
     <string name="app_name">翼天气</string>
 
     <string name="no_data">无数据</string>
@@ -11,5 +11,5 @@
     <string name="chengdu">成都</string>
     <string name="zhanjiang">湛江</string>
     <string name="change_main_image">修改主页图片</string>
-    <string name="setting_about">作者:   GitHub:FENG-MASTER</string>
+    <string  name="setting_about" formatted="false">作者: \n GitHub:FENG-MASTER</string>
 </resources>

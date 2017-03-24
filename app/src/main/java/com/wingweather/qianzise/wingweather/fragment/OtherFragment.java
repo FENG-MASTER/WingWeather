@@ -66,4 +66,14 @@ public class OtherFragment extends BaseWeatherFragment {
             recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions(),weather2.getSuggestions()));
         }
     }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden){
+            EventBus.getDefault().post(new SuggestionChangeAction(-1));
+        }else {
+            recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions(),weather2.getSuggestions()));
+        }
+    }
 }

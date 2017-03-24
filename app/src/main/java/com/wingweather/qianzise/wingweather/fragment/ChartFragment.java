@@ -121,7 +121,6 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.option,menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -129,11 +128,30 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
         switch (item.getItemId()){
             case R.id.item_select:
                 showSelect();
-                break;
+                return true;
             default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        selector.show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        selector.dismiss();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden){
+            showSelect();
+        }
     }
 }
