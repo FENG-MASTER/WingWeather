@@ -39,6 +39,14 @@ public class MyPreferences {
         return  getSharedPreferences().getString(Config.KEY_CITY2,Config.DEF_CITY2);
     }
 
+    public void setCityName1(String name){
+        getSharedPreferences().edit().putString(Config.KEY_CITY1,name).apply();
+    }
+
+    public void setCityName2(String name){
+        getSharedPreferences().edit().putString(Config.KEY_CITY2,name).apply();
+    }
+
     public SharedPreferences getSharedPreferences(){
         return sharedPreferences;
     }

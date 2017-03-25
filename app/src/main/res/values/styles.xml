@@ -22,7 +22,9 @@
 
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-
+    <style name="MyErrorStyle" parent="TextAppearance.Design.Error">
+        <item name="android:textColor">#ec4722</item>
+    </style>
 
 
 </resources>

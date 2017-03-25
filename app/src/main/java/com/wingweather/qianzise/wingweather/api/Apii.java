@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.wingweather.qianzise.wingweather.App;
+import com.wingweather.qianzise.wingweather.model.gson.SearchResult;
 import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.util.Util;
 
@@ -32,6 +33,7 @@ public class Apii {
     private static final String ALL_INFO="weather/";
     private static final String CON_ICON_URL="http://files.heweather.com/cond_icon/";
     private static final String CON_ICON_SUFFIX=".png";
+    private static final String SEARCH="search";
 
     private static final String KEY="aac0bdff0c8c475da834086428ece029";
 
@@ -96,7 +98,7 @@ public class Apii {
             return;
         }
 
-        city= Util.hanziToPinyin_city(city);
+
 
         sendRequest(BASE_API_URL + ALL_INFO + "?" + "city=" + city + "&key=" + KEY, new Response.Listener<String>() {
             @Override
@@ -122,7 +124,16 @@ public class Apii {
 
     }
 
-
+    public void checkCity(String cityName, final Listener<Boolean> listener){
+        sendRequest(BASE_API_URL + SEARCH+"?"+"city="+cityName+"&key="+KEY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson=new Gson();
+               SearchResult result= gson.fromJson(response, SearchResult.class);
+                listener.onReceive(result.hasFound());
+            }
+        });
+    }
 
 
     public interface Listener<T>{

@@ -1,18 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="cityNameArr">
-        <item>成都</item>
-        <item>湛江</item>
-        <item>北京</item>
-        <item>广西</item>
-    </string-array>
-
-
-    <string-array name="cityVal">
-        <item>chengdu</item>
-        <item>zhanjiang</item>
-        <item>beijing</item>
-        <item>guangxi</item>
-    </string-array>
-
 </resources>
