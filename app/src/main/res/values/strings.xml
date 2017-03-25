@@ -12,4 +12,6 @@
     <string name="zhanjiang">湛江</string>
     <string name="change_main_image">修改主页图片</string>
     <string  name="setting_about" formatted="false">作者: \n GitHub:FENG-MASTER</string>
+
+    <string name="version">1.1</string>
 </resources>

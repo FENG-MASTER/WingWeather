@@ -22,8 +22,9 @@
 
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-    <style name="MyErrorStyle" parent="TextAppearance.Design.Error">
-        <item name="android:textColor">#ec4722</item>
+    <style name="ErrorAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#a2ced1</item>
     </style>
 
 

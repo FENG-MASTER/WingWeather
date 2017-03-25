@@ -1,3 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="color_list">
+        <item>红色</item>
+        <item>橙色</item>
+        <item>黄色</item>
+        <item>绿色</item>
+        <item>青色</item>
+        <item>蓝色</item>
+        <item>紫色</item>
+    </string-array>
+
+
+    <string-array name="color_list_val">
+        <item>#FF0000</item>
+        <item>#FF9900</item>
+        <item>#FFFF00</item>
+        <item>#33FF00</item>
+        <item>#33FF99</item>
+        <item>#330099</item>
+        <item>#990066</item>
+
+
+    </string-array>
+
+
 </resources>

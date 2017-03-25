@@ -84,7 +84,7 @@ public class MyPreferences {
                 e.printStackTrace();
             }
         }
-        return index==1?Color.RED:Color.YELLOW;
+        return index==1?Color.parseColor(getSharedPreferences().getString(Config.KEY_COLOR1,"#000000")):Color.parseColor(getSharedPreferences().getString(Config.KEY_COLOR2,"#000000"));
 
     }
 

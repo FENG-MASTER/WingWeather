@@ -51,6 +51,11 @@ public class SettingsActivity extends BaseActivity {
 
 
     private void initEdit(){
+        left.setText(MyPreferences.getInstance().getCityName1());
+        right.setText(MyPreferences.getInstance().getCityName2());
+
+
+
         left.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -128,16 +133,16 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferenc);
-            setSummary();
+            initColorList();
         }
 
-        
-        private void setSummary(){
-            ListPreference city1= (ListPreference) findPreference(Config.KEY_CITY1);
-            ListPreference city2= (ListPreference) findPreference(Config.KEY_CITY2);
 
-            city1.setSummary(city1.getEntry());
-            city2.setSummary(city2.getEntry());
+        private void initColorList(){
+            ListPreference color1= (ListPreference) findPreference(Config.KEY_COLOR1);
+            ListPreference color2= (ListPreference) findPreference(Config.KEY_COLOR2);
+
+            color1.setSummary(color1.getEntry());
+            color2.setSummary(color2.getEntry());
 
         }
 

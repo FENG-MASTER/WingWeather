@@ -3,15 +3,34 @@
                   android:title="设置">
 
     <PreferenceCategory android:title="显示设置">
-        <ListPreference android:key="" />
+        <ListPreference
+            android:title="你的颜色"
+            android:entries="@array/color_list"
+            android:entryValues="@array/color_list_val"
+            android:key="your_color"/>
+
+        <ListPreference
+            android:title="对方的颜色"
+            android:entries="@array/color_list"
+            android:entryValues="@array/color_list_val"
+            android:key="anther_color"/>
 
     </PreferenceCategory>
 
 
     <PreferenceCategory android:title="说明">
-        <Preference android:key="about" android:title="@string/setting_about">
-            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/FENG-MASTER"/>
+        <Preference
+            android:key="about"
+            android:title="@string/setting_about">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/FENG-MASTER"/>
         </Preference>
+
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="版本">
+       <Preference android:title="@string/version"/>
+
+    </PreferenceCategory>
 </PreferenceScreen>

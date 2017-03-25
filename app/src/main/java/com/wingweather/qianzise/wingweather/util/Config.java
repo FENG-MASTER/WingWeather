@@ -9,6 +9,10 @@ public final class Config {
     public final static String KEY_CITY1="city1";
     public final static String KEY_CITY2="city2";
 
+    public final static String KEY_COLOR1="your_color";
+    public final static String KEY_COLOR2="anther_color";
+
+
     public final static String DEF_CITY1="成都";
     public final static String DEF_CITY2="湛江";
 
