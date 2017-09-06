@@ -48,6 +48,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 主activity
+ */
 public class MainActivity extends BaseActivity implements View.OnLongClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -66,21 +69,29 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     @BindView(R.id.tv_right_cityName)
     TextView rightCityName;
 
+    //首页中的大图
     @BindView(R.id.im_toolbar_main)
     ImageView mainImage;
+    //左边的头像
     @BindView(R.id.ci_left)
     CircleImageView leftAvatar;
+    //右边的头像
     @BindView(R.id.ci_right)
     CircleImageView rightAvatar;
 
+    //左边抽屉
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
+    //导航栏
     @BindView(R.id.nv_main)
     NavigationView navigationView;
-    private List<BaseWeatherFragment> fragments=new ArrayList<>();
-    private int currentFragmentIndex=0;
 
-    private int imageViewSetting=0;
+    //存储所有fragment
+    private List<BaseWeatherFragment> fragments = new ArrayList<>();
+    //当前显示fragment
+    private int currentFragmentIndex = 0;
+
+    private int imageViewSetting = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +101,10 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         initView(savedInstanceState);
         initFragment();
         initNav();
-        AvaterControl control=new AvaterControl();
+        AvaterControl control = new AvaterControl();
     }
 
-    private void initView(Bundle savedInstanceState){
+    private void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -104,31 +115,140 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         setImageListener();
     }
 
-    private void setCitesName(){
+    private void initFragment() {
+        fragments.clear();
+
+        BaseWeatherFragment fragment1 = MainInfoFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        BaseWeatherFragment fragment2 = ChartFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        BaseWeatherFragment fragment3 = OtherFragment.newInstance(
+                MyPreferences.getInstance().getCityName1(),
+                MyPreferences.getInstance().getCityName2());
+        fragments.add(fragment1);
+        fragments.add(fragment2);
+        fragments.add(fragment3);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_content, fragment1).commit();
+    }
+
+    /**
+     * 初始化导航栏
+     */
+    private void initNav() {
+        //设置导航栏选中listener
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                drawerLayout.closeDrawers();
+                switch (item.getItemId()) {
+                    case R.id.menu_item_main:
+                        //主页
+                        showFragment(0);
+                        return true;
+                    case R.id.menu_item_chart:
+                        //图表页
+                        showFragment(1);
+                        return true;
+                    case R.id.menu_item_other:
+                        //其他页
+                        showFragment(2);
+                        return true;
+                    case R.id.menu_item_setting:
+                        //打开设置
+                        startActivity(SettingsActivity.class);
+                        return true;
+                    case R.id.menu_item_change_main_image:
+                        //修改主页图片
+                        sentOpenImageIntent(Config.CODE_MAIN_IMAGE);
+                        return true;
+                    case R.id.menu_item_exit:
+                        //退出
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    /**
+     * 读取配置中城市,并且设置
+     */
+    private void setCitesName() {
         leftCityName.setText(MyPreferences.getInstance().getCityName1());
         rightCityName.setText(MyPreferences.getInstance().getCityName2());
 
     }
 
-    private void setImageListener(){
+    /**
+     * 头像框长按监听(换头像功能)
+     */
+    private void setImageListener() {
         rightAvatar.setOnLongClickListener(this);
         leftAvatar.setOnLongClickListener(this);
     }
 
+    /**
+     * 显示对应编号fragment
+     * @param i 编号
+     */
+    private void showFragment(int i) {
+        if (i >= fragments.size()) {
+            return;
+        }
+        if (i != currentFragmentIndex) {
+            Fragment from = fragments.get(currentFragmentIndex);
+            Fragment to = fragments.get(i);
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+//            transaction.setCustomAnimations();
+            if (to.isAdded()) {
+                //如果已经添加,则隐藏当前,显示对应fragment即可
+                transaction.hide(from).show(to).commit();
+            } else {
+                //如果fragment没有添加,则隐藏当前,添加fragment即可
+                transaction.add(R.id.fl_content, to).hide(from).commit();
+            }
+
+        }
+
+        currentFragmentIndex = i;
+
+
+    }
+
+    /**
+     * 选择图片intent
+     * @param code c
+     */
+    private void sentOpenImageIntent(int code) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        intent.putExtra("crop", true);
+//        intent.putExtra("return-data", true);
+        startActivityForResult(intent, code);
+    }
 
     @Override
     public boolean onLongClick(View v) {
-        int code=0;
-        switch (v.getId()){
+        int code = 0;
+        switch (v.getId()) {
             case R.id.ci_left:
                 //点击左侧头像
-                code=Config.CODE_LEFT_IMAGE;
+                code = Config.CODE_LEFT_IMAGE;
                 break;
 
             case R.id.ci_right:
                 //点击右侧头像
-                code=Config.CODE_RIGHT_IMAGE;
+                code = Config.CODE_RIGHT_IMAGE;
                 break;
             default:
                 break;
@@ -137,49 +257,26 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         return true;
     }
 
-    private void sentOpenImageIntent(int code){
-        Intent intent=new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_PICK);
-//        intent.putExtra("aspectX", 1);
-//        intent.putExtra("aspectY", 1);
-//        intent.putExtra("crop", true);
-//        intent.putExtra("return-data", true);
-        startActivityForResult(intent,code);
-    }
-
-    private void zoomImage(Uri uri,int w,int h){
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        // crop为true是设置在开启的intent中设置显示的view可以剪裁
-        intent.putExtra("crop", "true");
-
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", w);
-        intent.putExtra("aspectY", h);
-
-        // outputX,outputY 是剪裁图片的宽高
-        intent.putExtra("outputX", w*200);
-        intent.putExtra("outputY", h*100);
-        intent.putExtra("return-data", true);
-
-        startActivityForResult(intent, Config.CODE_ZOOM_IMAGE);
-    }
-
-
+    /**
+     * intent回调
+     * @param requestCode 请求码
+     * @param resultCode 结果码
+     * @param data intent数据
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode==RESULT_OK){
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case Config.CODE_MAIN_IMAGE:
-                    imageViewSetting=requestCode;
-                    zoomImage(data.getData(),0,0);
+                    //修改大图
+                    imageViewSetting = requestCode;
+                    zoomImage(data.getData(), 0, 0);
                     break;
                 case Config.CODE_LEFT_IMAGE:
                 case Config.CODE_RIGHT_IMAGE:
                     //要执行个缩放,必须记录下是那个view请求的改变图片
-                    imageViewSetting=requestCode;
-                    zoomImage(data.getData(),1,1);
+                    imageViewSetting = requestCode;
+                    zoomImage(data.getData(), 1, 1);
                     break;
                 case Config.CODE_ZOOM_IMAGE:
                     //缩放过后
@@ -190,14 +287,38 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
                     break;
             }
 
-        }else {
-            Snackbar.make(toolbar,"选择图片出错!",Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(toolbar, "选择图片出错!", Snackbar.LENGTH_SHORT).show();
         }
 
     }
 
+    /**
+     * 裁剪图片intent
+     * @param uri 图片uri
+     * @param w 宽
+     * @param h 高
+     */
+    private void zoomImage(Uri uri, int w, int h) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", "true");
+
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", w);
+        intent.putExtra("aspectY", h);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", w * 200);
+        intent.putExtra("outputY", h * 100);
+        intent.putExtra("return-data", true);
+
+        startActivityForResult(intent, Config.CODE_ZOOM_IMAGE);
+    }
+
     private void setImageToView(Bitmap bitmapFromUri) {
-        switch (imageViewSetting){
+        switch (imageViewSetting) {
             case Config.CODE_MAIN_IMAGE:
                 mainImage.setImageBitmap(bitmapFromUri);
                 break;
@@ -211,88 +332,22 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
                 break;
         }
-        imageViewSetting=0;
+        imageViewSetting = 0;
     }
 
-
-
-
-    private void initNav(){
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                drawerLayout.closeDrawers();
-                switch (item.getItemId()){
-                    case R.id.menu_item_main:
-                        showFragment(0);
-                        return true;
-                    case R.id.menu_item_chart:
-                        showFragment(1);
-                        return true;
-                    case R.id.menu_item_other:
-                        showFragment(2);
-                        return true;
-                    case R.id.menu_item_setting:
-                        //打开设置
-                        startActivity(SettingsActivity.class);
-                        return true;
-                    case R.id.menu_item_change_main_image:
-                        sentOpenImageIntent(Config.CODE_MAIN_IMAGE);
-                        return true;
-                    case R.id.menu_item_exit:
-                        finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-    }
-
-    private void showFragment(int i) {
-        if (i>=fragments.size()){
-            return;
-        }
-        if (i!=currentFragmentIndex){
-            Fragment from=fragments.get(currentFragmentIndex);
-            Fragment to=fragments.get(i);
-
-            FragmentManager fragmentManager=getSupportFragmentManager();
-            FragmentTransaction transaction=fragmentManager.beginTransaction();
-//            transaction.setCustomAnimations();
-            if (to.isAdded()){
-                transaction.hide(from).show(to).commit();
-            }else {
-                transaction.add(R.id.fl_content,to).hide(from).commit();
-            }
-
+    /**
+     * 返回键按下
+     */
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            //先收回导航栏
+            drawerLayout.closeDrawers();
+        } else {
+            super.onBackPressed();
         }
 
-        currentFragmentIndex=i;
-
-
     }
-
-    private void initFragment(){
-        fragments.clear();
-
-        BaseWeatherFragment fragment1= MainInfoFragment.newInstance(
-                MyPreferences.getInstance().getCityName1(),
-                MyPreferences.getInstance().getCityName2());
-        BaseWeatherFragment fragment2= ChartFragment.newInstance(
-                MyPreferences.getInstance().getCityName1(),
-                MyPreferences.getInstance().getCityName2());
-        BaseWeatherFragment fragment3= OtherFragment.newInstance(
-                MyPreferences.getInstance().getCityName1(),
-                MyPreferences.getInstance().getCityName2());
-        fragments.add(fragment1);
-        fragments.add(fragment2);
-        fragments.add(fragment3);
-
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_content,fragment1).commit();
-    }
-
-
 
     @Override
     protected void onDestroy() {
@@ -300,24 +355,19 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawers();
-        }else {
-            super.onBackPressed();
-        }
-
-    }
-
     /**
-     * 控制头像显示的内部类
+     * 控制头像显示的内部类{@link SuggestionChangeAction}
      */
-    public class AvaterControl{
+    public class AvaterControl {
 
-        public AvaterControl(){
+        public AvaterControl() {
             EventBus.getDefault().register(this);
 
+        }
+
+        @Subscribe
+        public void alterAvater(SuggestionChangeAction a) {
+            showAvater(a.getIndex());
         }
 
         public void showAvater(int n) {
@@ -325,22 +375,22 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
             switch (n) {
                 case Config.LEFT:
                     leftAvatar.animate().alpha(1).setDuration(500).start();
+                    leftCityName.animate().alpha(1).setDuration(500).start();
                     rightAvatar.animate().alpha(0).setDuration(500).start();
+                    rightCityName.animate().alpha(0).setDuration(500).start();
                     break;
                 case Config.RIGHT:
                     leftAvatar.animate().alpha(0).setDuration(500).start();
+                    leftCityName.animate().alpha(0).setDuration(500).start();
                     rightAvatar.animate().alpha(1).setDuration(500).start();
+                    rightCityName.animate().alpha(1).setDuration(500).start();
                     break;
                 default:
                     leftAvatar.animate().alpha(1).setDuration(500).start();
+                    leftCityName.animate().alpha(1).setDuration(500).start();
                     rightAvatar.animate().alpha(1).setDuration(500).start();
+                    rightCityName.animate().alpha(1).setDuration(500).start();
             }
-        }
-
-
-        @Subscribe
-        public void alterAvater(SuggestionChangeAction a){
-            showAvater(a.getIndex());
         }
     }
 

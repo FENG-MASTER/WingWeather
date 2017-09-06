@@ -6,11 +6,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.wingweather.qianzise.wingweather.activity.BaseActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends BaseActivity {
     @BindView(R.id.test_img)
     ImageView imageView;
     @Override

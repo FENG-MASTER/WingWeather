@@ -3,9 +3,19 @@
           package="com.wingweather.qianzise.wingweather">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--联网-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!--内存卡读取-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--内存卡读取-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--获取网络方式-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--获取设备信息-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--获取mac地址-->
 
+    
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -40,5 +50,8 @@
             </intent-filter>
         </activity>
     </application>
+
+    <meta-data android:value="58d6268e07fe65548a0011a6" android:name="UMENG_APPKEY"/>
+    <meta-data android:value="common" android:name="UMENG_CHANNEL"/>
 
 </manifest>

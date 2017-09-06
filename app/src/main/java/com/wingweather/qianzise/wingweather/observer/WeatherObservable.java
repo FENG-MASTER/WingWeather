@@ -15,10 +15,14 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
 
+/**
+ * 天气对象的信息发生器
+ */
 public class WeatherObservable {
 
     private String cityName;
@@ -33,17 +37,7 @@ public class WeatherObservable {
      * @return 发生器
      */
     public Observable<WeatherBean> getUpdateWeatherBeanObservable(){
-        return Observable.create(new ObservableOnSubscribe<WeatherBean>() {
-            @Override
-            public void subscribe(final ObservableEmitter<WeatherBean> e) throws Exception {
-                Apii.getInstance().getAll(cityName, new Apii.Listener<WeatherBean>() {
-                    @Override
-                    public void onReceive(WeatherBean weatherBean) {
-                        e.onNext(weatherBean);
-                    }
-                });
-            }
-        });
+        return Observable.create(e -> Apii.getInstance().getAll(cityName, weatherBean -> e.onNext(weatherBean)));
     }
 
 
@@ -53,12 +47,7 @@ public class WeatherObservable {
      * @return 发生器
      */
     public Observable<Weather> getUpdateWeatherObservable(){
-       return getUpdateWeatherBeanObservable().map(new Function<WeatherBean, Weather>() {
-           @Override
-           public Weather apply(WeatherBean weatherBean) throws Exception {
-               return Weather.newInstance(weatherBean);
-           }
-       });
+       return getUpdateWeatherBeanObservable().map(weatherBean -> Weather.newInstance(weatherBean));
     }
 
     /**
@@ -67,13 +56,10 @@ public class WeatherObservable {
      * @return 发生器
      */
     public Observable<Line> getWeatherLineDate(){
-        return getWeatherHourlyTempPoints().map(new Function<List<PointValue>, Line>() {
-            @Override
-            public Line apply(List<PointValue> pointValues) throws Exception {
-                Line line=new Line();
-                line.setValues(pointValues);
-                return line;
-            }
+        return getWeatherHourlyTempPoints().map(pointValues -> {
+            Line line=new Line();
+            line.setValues(pointValues);
+            return line;
         });
     }
 
@@ -84,22 +70,32 @@ public class WeatherObservable {
      */
     public Observable<List<PointValue>> getWeatherHourlyTempPoints(){
         // TODO:这里不怎么会用RX,先这样写吧,以后会了怎么合并之后再改
-       return getUpdateWeatherObservable().map(new Function<Weather, List<PointValue>>() {
-            @Override
-            public List<PointValue> apply(Weather weather) throws Exception {
-                List<PointValue> list=new ArrayList<PointValue>();
-                Iterator<WeatherBean.infoBean.HourlyForecastBean> i=
-                        weather.getHourlyInfos().iterator();
-                while (i.hasNext()){
-                    WeatherBean.infoBean.HourlyForecastBean bean=i.next();
-                    list.add(new PointValue(
-                            Util.date2hour(bean.getDate()),
-                            Integer.valueOf(bean.getTmp())));
-                }
+       return getUpdateWeatherObservable().map(weather -> {
+           List<PointValue> list=new ArrayList<PointValue>();
+           Iterator<WeatherBean.infoBean.HourlyForecastBean> i=
+                   weather.getHourlyInfos().iterator();
+           while (i.hasNext()){
+               WeatherBean.infoBean.HourlyForecastBean bean=i.next();
+               list.add(new PointValue(
+                       Util.date2hour(bean.getDate()),
+                       Integer.valueOf(bean.getTmp())));
+           }
 
-                return list;
+           return list;
+       });
+    }
+
+    public Observable<PointValue>  getWeatherHourlyTempPointss(){
+        return getUpdateWeatherObservable().flatMap(new Function<Weather, ObservableSource<PointValue>>() {
+            @Override
+            public ObservableSource<PointValue> apply(Weather weather) throws Exception {
+               return Observable.fromIterable(weather.getHourlyInfos()).map(hourlyForecastBean -> new PointValue(
+                       Util.date2hour(hourlyForecastBean.getDate()),
+                       Integer.valueOf(hourlyForecastBean.getTmp())));
             }
         });
+
+
     }
 
     /**

@@ -76,4 +76,10 @@ public class OtherFragment extends BaseWeatherFragment {
             recyclerView.setAdapter(new SuggestionAdapter(getContext(),weather1.getSuggestions(),weather2.getSuggestions()));
         }
     }
+
+
+    @Override
+    public String getFragmentName() {
+        return "生活指数页面";
+    }
 }

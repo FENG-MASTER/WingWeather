@@ -154,4 +154,10 @@ public class ChartFragment extends BaseWeatherFragment implements AdapterView.On
             showSelect();
         }
     }
+
+
+    @Override
+    public String getFragmentName() {
+        return "图表页面";
+    }
 }

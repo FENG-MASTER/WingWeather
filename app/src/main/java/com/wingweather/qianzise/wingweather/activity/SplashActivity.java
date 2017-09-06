@@ -9,23 +9,24 @@ import android.view.WindowManager;
 import com.wingweather.qianzise.wingweather.MainActivity;
 import com.wingweather.qianzise.wingweather.R;
 
+/**
+ * 启动页面
+ */
 public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);//全屏
 
         setContentView(R.layout.activity_splash);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(MainActivity.class);
-                finish();
-            }
-        },1000);
+        //TODO:这种启动页的方式不会预先加载acitivity,影响性能
+        new Handler().postDelayed(() -> {
+            startActivity(MainActivity.class);
+            finish();
+        },500);
 
     }
 

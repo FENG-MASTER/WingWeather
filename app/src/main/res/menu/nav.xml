@@ -3,9 +3,9 @@
       xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:id="@+id/g1">
-        <item android:id="@+id/menu_item_main" android:title="主页" android:icon="@drawable/delicious"/>
-        <item android:id="@+id/menu_item_chart" android:title="图表" android:icon="@drawable/line_chart"/>
-        <item android:id="@+id/menu_item_other" android:title="其他" android:icon="@drawable/doughnut_chart"/>
+        <item android:id="@+id/menu_item_main" android:title="@string/main" android:icon="@drawable/delicious"/>
+        <item android:id="@+id/menu_item_chart" android:title="@string/chart" android:icon="@drawable/line_chart"/>
+        <item android:id="@+id/menu_item_other" android:title="@string/suggestion" android:icon="@drawable/doughnut_chart"/>
 
     </group>
 

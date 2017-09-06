@@ -17,13 +17,19 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by qianzise on 2017/3/18 0018.
+ * 线性图表显示组件
  */
-
 public abstract class LineChartPresenter extends IChartPresenter {
 
     protected List<Line> lines=new ArrayList<>();
     protected LineChartView lineChartView;
 
+    /**
+     * 获得一条line供显示
+     * 这个方法需要实现的是根据weather对象,新建一个要展示的line对象
+     * @param weather 对象
+     * @return line
+     */
     abstract Line getLine(Weather weather);
 
 
@@ -33,6 +39,10 @@ public abstract class LineChartPresenter extends IChartPresenter {
         viewGroup.addView(lineChartView);
     }
 
+    /**
+     * 用代码新建lineChartView
+     * @param context 上下文
+     */
     private void initLineChart(Context context){
         lineChartView=new LineChartView(context);
         ViewGroup.LayoutParams layoutParams=

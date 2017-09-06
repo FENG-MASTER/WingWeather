@@ -20,7 +20,7 @@ import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.util.MyPreferences;
 
 /**
- * 自定义view,继承的子类都会具有切换图片后自动保存的功能
+ * 自定义圆形图片框view,继承的子类都会具有切换图片后自动保存的功能
  */
 
 public class CircleImageView extends AutoSaveImageView{

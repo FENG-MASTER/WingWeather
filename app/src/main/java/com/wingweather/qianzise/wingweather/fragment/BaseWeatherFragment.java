@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
 import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.model.Weather;
 
@@ -79,5 +80,15 @@ public abstract class BaseWeatherFragment extends Fragment implements Weather.We
      */
     public abstract int getLayoutID();
 
+    @Override
+    public void onResume() {
+        super.onResume();
+     //   MobclickAgent.onPageStart(getFragmentName());//友盟统计页面
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    //    MobclickAgent.onPageEnd(getFragmentName());
+    }
 }

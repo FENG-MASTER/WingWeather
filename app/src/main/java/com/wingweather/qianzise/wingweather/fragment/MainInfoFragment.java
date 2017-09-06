@@ -62,4 +62,8 @@ public class MainInfoFragment extends BaseWeatherFragment {
         recyclerView.invalidate();
     }
 
+    @Override
+    public String getFragmentName() {
+        return "基础信息页面";
+    }
 }

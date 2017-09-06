@@ -8,9 +8,13 @@ android {
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        jackOptions {
+            enabled true
+        }
+
     }
 
 
@@ -23,8 +27,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 
@@ -44,9 +48,9 @@ dependencies {
     //表格
     compile 'com.hedgehog.ratingbar:app:1.1.2'
 
-    //  compile 'com.hwangjr.rxbus:rxbus:2.0.0-beta' 我感觉有bug啊这个
+    compile 'com.umeng.analytics:analytics:latest.integration'//友盟
     
-    compile files('libs/nineoldandroids-2.4.0.jar')
+//    compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.code.gson:gson:2.8.0'
