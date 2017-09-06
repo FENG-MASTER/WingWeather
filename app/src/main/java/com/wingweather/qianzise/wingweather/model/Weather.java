@@ -176,19 +176,19 @@ public class Weather implements Observer<Object> {
             List<Suggestion> list = new ArrayList<>();
             WeatherBean.infoBean.SuggestionBean suggestions = mWeatherBean.getInfo().getSuggestion();
             Suggestion comf = new Suggestion(
-                    "舒适度指数",R.drawable.comfort, suggestions.getComf().getBrf(), suggestions.getComf().getTxt());
+                    "舒适度指数",R.drawable.comfort_icon, suggestions.getComf().getBrf(), suggestions.getComf().getTxt());
             Suggestion drsg = new Suggestion(
-                    "穿衣指数",R.drawable.wear, suggestions.getDrsg().getBrf(), suggestions.getDrsg().getTxt());
+                    "穿衣指数",R.drawable.wear_icon, suggestions.getDrsg().getBrf(), suggestions.getDrsg().getTxt());
             Suggestion sport = new Suggestion(
-                    "运动指数", R.drawable.sport,suggestions.getSport().getBrf(), suggestions.getSport().getTxt());
+                    "运动指数", R.drawable.sport_icon,suggestions.getSport().getBrf(), suggestions.getSport().getTxt());
             Suggestion flu = new Suggestion(
-                    "感冒指数", R.drawable.cold,suggestions.getFlu().getBrf(), suggestions.getFlu().getTxt());
+                    "感冒指数", R.drawable.cold_icon,suggestions.getFlu().getBrf(), suggestions.getFlu().getTxt());
             Suggestion uv = new Suggestion(
-                    "紫外线指数", R.drawable.uv,suggestions.getUv().getBrf(), suggestions.getUv().getTxt());
+                    "紫外线指数", R.drawable.uv_icon,suggestions.getUv().getBrf(), suggestions.getUv().getTxt());
             Suggestion cw = new Suggestion(
-                    "洗车指数", R.drawable.car,suggestions.getCw().getBrf(), suggestions.getCw().getTxt());
+                    "洗车指数", R.drawable.car_icon,suggestions.getCw().getBrf(), suggestions.getCw().getTxt());
             Suggestion trav=new Suggestion(
-                    "旅游指数",R.drawable.trip,suggestions.getTrav().getBrf(),suggestions.getTrav().getTxt());
+                    "旅游指数",R.drawable.trip_icon,suggestions.getTrav().getBrf(),suggestions.getTrav().getTxt());
 
             list.add(comf);
             list.add(drsg);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
+import com.wingweather.qianzise.wingweather.util.Util;
 
 import java.util.List;
 
@@ -171,6 +172,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @BindView(R.id.tv_info_title)
         TextView title;
+        @BindView(R.id.iv_info_title_icon)
+        ImageView icon;
 
         @BindView(R.id.tv_info_left_next_day)
         TextView left_next;
@@ -192,6 +195,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setTitle(String s){
             title.setText(s);
+            icon.setImageResource(Util.getIconID(s));
         }
 
         public void setLeft_next(String s){
@@ -212,6 +216,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ImageView right;
         @BindView(R.id.tv_info_title)
         TextView title;
+        @BindView(R.id.iv_info_title_icon)
+        ImageView icon;
 
         public ImageHolder(View itemView) {
             super(itemView);
@@ -228,6 +234,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setTitle(String s){
             title.setText(s);
+            icon.setImageResource(Util.getIconID(s));
         }
 
     }

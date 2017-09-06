@@ -51,4 +51,25 @@ public class Util {
         }
         return bitmap;
     }
+
+    public static int getIconID(String s){
+        switch (s){
+            case "温度":
+                return R.drawable.temperature_icon;
+            case "天气状况":
+                return R.drawable.weather_icon;
+            case "相对湿度":
+                return R.drawable.humidity_icon;
+            case "降水概率":
+                return R.drawable.rain_icon;
+            case "风力":
+                return R.drawable.wind_icon;
+            case "空气状况":
+                return R.drawable.aqi_icon;
+            case "PM2.5":
+                return R.drawable.pm25_icon;
+            default:
+                return R.drawable.weather_icon;
+        }
+    }
 }
