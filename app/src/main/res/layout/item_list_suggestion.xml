@@ -1,77 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:hedgehog="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
               android:id="@+id/ll_item_bg"
-              android:padding="28dp"
-              android:background="@drawable/item_list_bg"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:background="@drawable/item_list_bg"
+              android:orientation="vertical"
+              android:padding="28dp">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/iv_suggestion_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            />
+
         <TextView
             android:id="@+id/tv_suggestion_name"
-            android:textStyle="italic"
-            android:gravity="left|center"
-            android:textSize="17sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:maxLines="1"/>
+            android:gravity="right|bottom"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:textStyle="italic|bold"/>
 
-        <com.hedgehog.ratingbar.RatingBar
-            android:id="@+id/rb_index"
-            android:gravity="center"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            hedgehog:clickable="false"
-            android:layout_height="match_parent"
-            hedgehog:starCount="5"
-            hedgehog:starImageHeight="30dp"
-            hedgehog:starImageWidth="30dp"
-            hedgehog:starEmpty="@drawable/progressbar_bg"
-            hedgehog:starFill="@drawable/progressbar_progress"
-        />
+
         <View
-            android:padding="3dp"
-            android:background="?android:attr/listDivider"
             android:layout_width="1dp"
-            android:layout_height="25dp"/>
-        <TextView
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider"
+            android:padding="3dp"/>
 
+        <TextView
             android:id="@+id/tv_suggestion_index"
-            android:textStyle="bold"
-            android:gravity="bottom|left"
-            android:textSize="11sp"
-            android:layout_weight="2"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="bottom|left"
+            android:padding="5dp"
+            android:textSize="11sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <View
-        android:layout_margin="5dp"
-        android:layout_gravity="center"
-        android:padding="3dp"
-        android:background="?android:attr/listDivider"
         android:layout_width="350dp"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="?android:attr/listDivider"
+        android:padding="3dp"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
-            android:textColor="#77000000"
             android:id="@+id/tv_suggestion_detail"
-            android:textSize="18sp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#77000000"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

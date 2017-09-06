@@ -45,8 +45,7 @@ dependencies {
 //        解决依赖问题
     }
 
-    //表格
-    compile 'com.hedgehog.ratingbar:app:1.1.2'
+
 
     compile 'com.umeng.analytics:analytics:latest.integration'//友盟
     

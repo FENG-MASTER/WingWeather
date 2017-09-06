@@ -12,6 +12,9 @@ import com.wingweather.qianzise.wingweather.model.Weather;
 
 import butterknife.BindView;
 
+/**
+ * 主页面信息fragment
+ */
 public class MainInfoFragment extends BaseWeatherFragment {
 
 
@@ -44,12 +47,17 @@ public class MainInfoFragment extends BaseWeatherFragment {
     }
 
 
+    /**
+     * 初始化列表
+     */
     private void initList() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        //设置适配器
         recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
+        //设置间隔显示
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
@@ -58,7 +66,7 @@ public class MainInfoFragment extends BaseWeatherFragment {
 
     @Override
     public void onWeatherChange(Weather weather) {
-        recyclerView.setAdapter(new InfoAdapter(getContext(),weather1,weather2));
+        recyclerView.swapAdapter(new InfoAdapter(getContext(),weather1,weather2),true);
         recyclerView.invalidate();
     }
 

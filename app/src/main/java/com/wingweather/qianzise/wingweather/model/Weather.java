@@ -11,6 +11,8 @@ import com.wingweather.qianzise.wingweather.model.gson.WeatherBean;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -174,19 +176,19 @@ public class Weather implements Observer<Object> {
             List<Suggestion> list = new ArrayList<>();
             WeatherBean.infoBean.SuggestionBean suggestions = mWeatherBean.getInfo().getSuggestion();
             Suggestion comf = new Suggestion(
-                    "舒适度指数", suggestions.getComf().getBrf(), suggestions.getComf().getTxt());
+                    "舒适度指数",R.drawable.comfort, suggestions.getComf().getBrf(), suggestions.getComf().getTxt());
             Suggestion drsg = new Suggestion(
-                    "穿衣指数", suggestions.getDrsg().getBrf(), suggestions.getDrsg().getTxt());
+                    "穿衣指数",R.drawable.wear, suggestions.getDrsg().getBrf(), suggestions.getDrsg().getTxt());
             Suggestion sport = new Suggestion(
-                    "运动指数", suggestions.getSport().getBrf(), suggestions.getSport().getTxt());
+                    "运动指数", R.drawable.sport,suggestions.getSport().getBrf(), suggestions.getSport().getTxt());
             Suggestion flu = new Suggestion(
-                    "感冒指数", suggestions.getFlu().getBrf(), suggestions.getFlu().getTxt());
+                    "感冒指数", R.drawable.cold,suggestions.getFlu().getBrf(), suggestions.getFlu().getTxt());
             Suggestion uv = new Suggestion(
-                    "紫外线指数", suggestions.getUv().getBrf(), suggestions.getUv().getTxt());
+                    "紫外线指数", R.drawable.uv,suggestions.getUv().getBrf(), suggestions.getUv().getTxt());
             Suggestion cw = new Suggestion(
-                    "洗车指数", suggestions.getCw().getBrf(), suggestions.getCw().getTxt());
+                    "洗车指数", R.drawable.car,suggestions.getCw().getBrf(), suggestions.getCw().getTxt());
             Suggestion trav=new Suggestion(
-                    "旅游指数",suggestions.getTrav().getBrf(),suggestions.getTrav().getTxt());
+                    "旅游指数",R.drawable.trip,suggestions.getTrav().getBrf(),suggestions.getTrav().getTxt());
 
             list.add(comf);
             list.add(drsg);
@@ -195,6 +197,8 @@ public class Weather implements Observer<Object> {
             list.add(uv);
             list.add(cw);
             list.add(trav);
+            //排序解决指数显示错位的BUG
+            Collections.sort(list);
             return list;
 
         }

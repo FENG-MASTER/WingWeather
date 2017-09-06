@@ -11,7 +11,6 @@
        android:layout_height="wrap_content">
       <ImageView
           android:id="@+id/test_img"
-          android:src="@drawable/dva"
           android:scaleType="fitXY"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>

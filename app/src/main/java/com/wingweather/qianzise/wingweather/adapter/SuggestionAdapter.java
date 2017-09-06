@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hedgehog.ratingbar.RatingBar;
+
 import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.model.Suggestion;
@@ -72,10 +73,10 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
         TextView name;
         @BindView(R.id.tv_suggestion_index)
         TextView index;
-        @BindView(R.id.rb_index)
-        RatingBar ratingBar;
         @BindView(R.id.tv_suggestion_detail)
         TextView detail;
+        @BindView(R.id.iv_suggestion_icon)
+        ImageView icon;
 
 
         private List<Suggestion> list=new ArrayList<>();
@@ -100,9 +101,9 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Ho
             n=n%2;
             Suggestion s=list.get(n);
             index.setText(s.getIndex());
-            ratingBar.setStar(2);
             name.setText(s.getName());
             detail.setText(s.getDetail());
+            icon.setImageResource(s.getIconID());
         }
 
 

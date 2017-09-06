@@ -15,8 +15,8 @@ import java.io.FileOutputStream;
 
 /**
  * Created by qianzise on 2017/3/5 0005.
+ * 配置类 单例
  */
-
 public class MyPreferences {
     private static MyPreferences instance=new MyPreferences();
 
@@ -31,18 +31,34 @@ public class MyPreferences {
 
     }
 
+    /**
+     * 获得城市2名称
+     * @return 城市名
+     */
     public String getCityName2(){
         return  getSharedPreferences().getString(Config.KEY_CITY1,Config.DEF_CITY1);
     }
 
+    /**
+     * 获得城市1名称
+     * @return 城市名
+     */
     public String getCityName1(){
         return  getSharedPreferences().getString(Config.KEY_CITY2,Config.DEF_CITY2);
     }
 
+    /**
+     * 设置城市1
+     * @param name 城市名
+     */
     public void setCityName1(String name){
         getSharedPreferences().edit().putString(Config.KEY_CITY1,name).apply();
     }
 
+    /**
+     * 设置城市2
+     * @param name 城市名
+     */
     public void setCityName2(String name){
         getSharedPreferences().edit().putString(Config.KEY_CITY2,name).apply();
     }
@@ -52,6 +68,12 @@ public class MyPreferences {
     }
 
 
+    /**
+     * 保存图片
+     * @param id 图片id
+     * @param bitmap 图片
+     * @return 是否保存成功
+     */
     public static boolean saveImage(int id, Bitmap bitmap){
         FileOutputStream fileOutputStream=null;
         try {
@@ -64,6 +86,11 @@ public class MyPreferences {
         return true;
     }
 
+    /**
+     * 加载图片
+     * @param id 图片id
+     * @return 图片
+     */
     public static Bitmap loadImage(int id){
         FileInputStream fileInputStream=null;
         try {
@@ -76,6 +103,11 @@ public class MyPreferences {
         return BitmapFactory.decodeStream(fileInputStream);
     }
 
+    /**
+     * 获取线条颜色配置
+     * @param index 线条id
+     * @return 颜色
+     */
     public int getLineColor(int index){
         if (index>2||index<0){
             try {
