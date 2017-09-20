@@ -177,7 +177,7 @@ public class CircleImageView extends AutoSaveImageView{
         if (mBitmap==null){
             return;
         }
-        canvas.drawRect(-1,-1,getWidth()+1,getHeight()+1,mCirlePaint);
+       // canvas.drawRect(-1,-1,getWidth()+1,getHeight()+1,mCirlePaint);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, circleRadius, mImagePaint);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, circleRadius, mCirlePaint);
     }

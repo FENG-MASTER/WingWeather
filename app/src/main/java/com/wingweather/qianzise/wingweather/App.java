@@ -1,10 +1,20 @@
 package com.wingweather.qianzise.wingweather;
 
 import android.app.Application;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wingweather.qianzise.wingweather.util.MyPreferences;
+
+import java.util.HashMap;
+
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 
 /**
  * Created by qianzise on 2017/2/27 0027.
