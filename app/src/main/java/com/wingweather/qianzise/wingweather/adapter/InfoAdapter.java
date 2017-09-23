@@ -3,6 +3,7 @@ package com.wingweather.qianzise.wingweather.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,12 @@ import com.wingweather.qianzise.wingweather.R;
 import com.wingweather.qianzise.wingweather.model.Weather;
 import com.wingweather.qianzise.wingweather.observer.WeatherObservable;
 import com.wingweather.qianzise.wingweather.util.Util;
+import com.wingweather.qianzise.wingweather.view.RingBar;
 
+import java.text.Format;
+import java.util.Formatter;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +38,7 @@ import io.reactivex.schedulers.Schedulers;
 public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_base=1;             //第一种布局
     public static final int TYPE_with_image=2;       //第二种布局,带图片显示
+    public static final int TYPE_with_circle=3;      //第三种布局,带环状显示数据
 
     private Context context;
     private Weather weather1;
@@ -68,6 +74,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case TYPE_with_image:
                 //带图的类型
                 return createImageHolder(parent);
+            case TYPE_with_circle:
+                return createCircleHolder(parent);
 
             default:
                 //默认用基础类型
@@ -77,6 +85,19 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CircleHolder){
+            CircleHolder circleHolder= (CircleHolder) holder;
+            String str = nowList1.get(position).second;
+            try {
+                circleHolder.setLProgress(Integer.valueOf(str.substring(0,str.length()-1)));
+                str=nowList2.get(position).second;
+                circleHolder.setRProgress(Integer.valueOf(str.substring(0,str.length()-1)));
+            }catch (Exception e){
+
+            }
+
+        }
+
         if (holder instanceof BaseHolder){
             BaseHolder baseHolder=(BaseHolder)holder;
 
@@ -143,6 +164,12 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return holder;
     }
 
+    private CircleHolder createCircleHolder(ViewGroup parent){
+        View view= LayoutInflater.from(context).inflate(R.layout.item_list_circle_info,parent,false);
+        CircleHolder holder=new CircleHolder(view);
+        return holder;
+    }
+
 
 
 
@@ -157,9 +184,12 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         if (position==1){
             return TYPE_with_image;
+        }else if(position==2||position==3){
+           return TYPE_with_circle;
         }else {
             return TYPE_base;
         }
+
     }
 
 
@@ -206,6 +236,27 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             right_next.setText(s);
         }
 
+    }
+
+    public static class CircleHolder extends BaseHolder{
+
+        @BindView(R.id.rb_info_circle_left)
+        RingBar lringBar;
+        @BindView(R.id.rb_info_circle_right)
+        RingBar rringBar;
+
+
+        public CircleHolder(View itemView) {
+            super(itemView);
+        }
+
+        public void setLProgress(int progress){
+            lringBar.setProgress(progress);
+        }
+
+        public void setRProgress(int progress){
+            rringBar.setProgress(progress);
+        }
     }
 
 

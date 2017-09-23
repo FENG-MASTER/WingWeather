@@ -19,6 +19,11 @@
         <attr name="textSize" format="dimension"/>
         <attr name="textColor" format="color"/>
         <attr name="degree" format="integer"/>
+        <attr name="borderType" format="enum" >
+            <enum name="round" value="2"/>
+            <enum name="flat" value="1"/>
+
+        </attr>
 
     </declare-styleable>
 </resources>

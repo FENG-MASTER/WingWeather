@@ -18,12 +18,18 @@ import com.wingweather.qianzise.wingweather.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+
 /**
  * Created by qianzise on 2017/9/23.
  *
  */
 
 public class RingBar extends RelativeLayout {
+
+    public static final int TYPE_ROUND=2;
+    public static final int TYPE_FLAT=1;
+
 
     private List<ProgressListener> listenerList =new ArrayList<>();
     /**
@@ -69,6 +75,8 @@ public class RingBar extends RelativeLayout {
      */
     private int textColor;
 
+    private int borderType;
+
     private RectF mRect;
     private int degree;
 
@@ -92,7 +100,7 @@ public class RingBar extends RelativeLayout {
         finishColor = array.getColor(R.styleable.RingBar_finishColor, Color.BLACK);
         unFinishColor = array.getColor(R.styleable.RingBar_unFinishColor, Color.WHITE);
         borderWidth = array.getDimension(R.styleable.RingBar_borderWidth, 5);
-        displayProgress = array.getBoolean(R.styleable.RingBar_displayProgress, true);
+        displayProgress = array.getBoolean(R.styleable.RingBar_displayProgress, false);
         textSize = array.getDimension(R.styleable.RingBar_textSize, 5);
         textColor = array.getColor(R.styleable.RingBar_textColor, Color.BLACK);
 
@@ -100,6 +108,7 @@ public class RingBar extends RelativeLayout {
         max = array.getInteger(R.styleable.RingBar_max, 100);
 
         degree = array.getInteger(R.styleable.RingBar_degree, 360);
+        borderType=array.getInteger(R.styleable.RingBar_borderType,TYPE_FLAT);
 
         array.recycle();
 
@@ -124,14 +133,22 @@ public class RingBar extends RelativeLayout {
 
     private void init() {
 
-        mFinishPaint = new Paint();
-        mUnFinishPaint = new Paint();
+        mFinishPaint = new Paint(ANTI_ALIAS_FLAG);
+        mUnFinishPaint = new Paint(ANTI_ALIAS_FLAG);
+
+        if (borderType==TYPE_ROUND){
+            mFinishPaint.setStrokeCap(Paint.Cap.ROUND);
+            mUnFinishPaint.setStrokeCap(Paint.Cap.ROUND);
+        }
 
         mFinishPaint.setAntiAlias(true);
         mUnFinishPaint.setAntiAlias(true);
 
         mFinishPaint.setColor(finishColor);
         mUnFinishPaint.setColor(unFinishColor);
+
+
+
 
         mFinishPaint.setStyle(Paint.Style.STROKE);
         mUnFinishPaint.setStyle(Paint.Style.STROKE);
@@ -146,6 +163,7 @@ public class RingBar extends RelativeLayout {
 
         mRect = new RectF(borderWidth, borderWidth, w - 2 * borderWidth, h - 2 * borderWidth);
     }
+
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -174,8 +192,8 @@ public class RingBar extends RelativeLayout {
 
     public void setProgress(int mProgress) {
         this.mProgress = mProgress;
-        notifyProgressChange(mProgress);
         invalidate();
+        notifyProgressChange(mProgress);
     }
 
     @Override
@@ -232,7 +250,19 @@ public class RingBar extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int wMode=MeasureSpec.getMode(widthMeasureSpec);
+        int width=MeasureSpec.getSize(widthMeasureSpec);
+        int hMode=MeasureSpec.getMode(heightMeasureSpec);
+        int height=MeasureSpec.getSize(heightMeasureSpec);
+
+        if (width>height){
+            height=width;
+        }else {
+            width=height;
+        }
+
+
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width,wMode), MeasureSpec.makeMeasureSpec(height,hMode));
     }
 
 

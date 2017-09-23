@@ -15,11 +15,12 @@
       <com.wingweather.qianzise.wingweather.view.RingBar
           android:id="@+id/test_ring_bar"
           android_custom:degree="160"
-          android_custom:borderWidth="5dp"
+          android_custom:borderWidth="8dp"
           android_custom:displayProgress="true"
           android_custom:finishColor="#00ff00"
           android_custom:textColor="#0ff0f0"
           android_custom:textSize="20sp"
+          android_custom:borderType="round"
           android_custom:unFinishColor="#ff0000"
           android:layout_width="200dp"
           android:layout_height="200dp">
