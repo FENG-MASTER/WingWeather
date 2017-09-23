@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.umeng.analytics.MobclickAgent;
-import com.wingweather.qianzise.wingweather.R;
+
 
 /**
  * 基础activity,现在暂时没啥大用

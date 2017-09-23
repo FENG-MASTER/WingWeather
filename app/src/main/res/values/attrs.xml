@@ -7,4 +7,18 @@
         <attr name="circleBorder" format="dimension"/>
         <attr name="circleColor" format="color"/>
     </declare-styleable>
+
+
+    <declare-styleable name="RingBar">
+        <attr name="progress" format="integer"/>
+        <attr name="max" format="integer"/>
+        <attr name="finishColor" format="color"/>
+        <attr name="unFinishColor" format="color"/>
+        <attr name="borderWidth" format="dimension"/>
+        <attr name="displayProgress" format="boolean"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+        <attr name="degree" format="integer"/>
+
+    </declare-styleable>
 </resources>

@@ -15,4 +15,6 @@
 
     </group>
     <item android:id="@+id/menu_item_exit" android:title="@string/exit" android:icon="@drawable/exit"/>
+
+    <item android:id="@+id/menu_test" android:title="test" android:icon="@drawable/car_icon"/>
 </menu>

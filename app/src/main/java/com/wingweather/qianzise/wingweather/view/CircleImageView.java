@@ -60,7 +60,7 @@ public class CircleImageView extends AutoSaveImageView{
         super(context, attrs, defStyleAttr);
 
         super.setScaleType(SCALE_TYPE);
-
+        
 
         TypedArray a=context.obtainStyledAttributes(attrs,R.styleable.CircleImageView,defStyleAttr,0);
         circleColor =a.getColor(R.styleable.CircleImageView_circleColor,Color.BLACK);

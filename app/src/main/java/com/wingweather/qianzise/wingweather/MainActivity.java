@@ -168,6 +168,9 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
                         //退出
                         finish();
                         return true;
+                    case R.id.menu_test:
+                        startActivity(TestActivity.class);
+                        return true;
                     default:
                         return false;
                 }
