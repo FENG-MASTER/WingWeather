@@ -3,11 +3,15 @@ package com.wingweather.qianzise.wingweather.util;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import com.wingweather.qianzise.wingweather.App;
 import com.wingweather.qianzise.wingweather.R;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,6 +54,16 @@ public class Util {
             bitmap=bundle.getParcelable("data");
         }
         return bitmap;
+    }
+
+    public static Bitmap getBitmapFromUri(Uri uri){
+
+        try {
+            return MediaStore.Images.Media.getBitmap(App.getContext().getContentResolver(),uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static int getIconID(String s){

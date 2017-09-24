@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -114,6 +115,8 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
      * 隐藏日期动画
      */
     private ObjectAnimator inVisbleAnimator;
+
+    private Uri imageUri;
 
     //存储所有fragment
     private List<BaseWeatherFragment> fragments = new ArrayList<>();
@@ -387,8 +390,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
                     break;
                 case Config.CODE_ZOOM_IMAGE:
                     //缩放过后
-                    setImageToView(Util.getBitmapFromIntent(data));
-
+                    setImageToView(Util.getBitmapFromUri(imageUri));
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
@@ -407,6 +409,7 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
      * @param h 高
      */
     private void zoomImage(Uri uri, int w, int h) {
+        imageUri=uri;
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // crop为true是设置在开启的intent中设置显示的view可以剪裁
@@ -417,9 +420,14 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         intent.putExtra("aspectY", h);
 
         // outputX,outputY 是剪裁图片的宽高
-        intent.putExtra("outputX", w * 200);
+        intent.putExtra("outputX", w * 100);
         intent.putExtra("outputY", h * 100);
-        intent.putExtra("return-data", true);
+      //  intent.putExtra("scale", true);
+        //注意,请设置成false,因为IBinder传输最大40K,如果图片大于这个,会出错
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        intent.putExtra("outputFormat",Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection",true);
 
         startActivityForResult(intent, Config.CODE_ZOOM_IMAGE);
     }
