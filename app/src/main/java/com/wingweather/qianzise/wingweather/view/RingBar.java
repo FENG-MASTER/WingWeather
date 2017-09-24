@@ -131,6 +131,8 @@ public class RingBar extends RelativeLayout {
         addView(textView);
     }
 
+
+
     private void init() {
 
         mFinishPaint = new Paint(ANTI_ALIAS_FLAG);

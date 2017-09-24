@@ -1,5 +1,8 @@
 package com.wingweather.qianzise.wingweather;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -21,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +40,7 @@ import com.wingweather.qianzise.wingweather.util.Config;
 import com.wingweather.qianzise.wingweather.util.MyPreferences;
 import com.wingweather.qianzise.wingweather.observer.Bus.SuggestionChangeAction;
 import com.wingweather.qianzise.wingweather.util.Util;
+import com.wingweather.qianzise.wingweather.util.listener.AppBarLayoutListener;
 import com.wingweather.qianzise.wingweather.view.CircleImageView;
 
 
@@ -85,6 +90,13 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     //导航栏
     @BindView(R.id.nv_main)
     NavigationView navigationView;
+    @BindView(R.id.ll_toolbar_date)
+    LinearLayout dateLayout;
+
+    private boolean dateAnimatorFlag=false;
+
+    private ObjectAnimator visbleAnimator;
+    private ObjectAnimator inVisbleAnimator;
 
     //存储所有fragment
     private List<BaseWeatherFragment> fragments = new ArrayList<>();
@@ -110,9 +122,76 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         setSupportActionBar(toolbar);
         setTitle(" ");
 
+        visbleAnimator=ObjectAnimator.ofFloat(dateLayout,"alpha",0f,1f).setDuration(500);
+        visbleAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                dateAnimatorFlag=true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dateAnimatorFlag=false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        inVisbleAnimator=ObjectAnimator.ofFloat(dateLayout,"alpha",1f,0f).setDuration(500);
+        inVisbleAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                dateAnimatorFlag=true;
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dateAnimatorFlag=false;
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
 
         setCitesName();
         setImageListener();
+        setAppbarListener();
+
+    }
+
+
+    private void setAppbarListener(){
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayoutListener() {
+            @Override
+            public void onStateChange(int state) {
+                if (dateAnimatorFlag){
+                    return;
+                }
+                if (state==EXPANDED){
+                    inVisbleAnimator.start();
+                }else if (state==COLLAPSED){
+                    visbleAnimator.start();
+
+                }
+            }
+        });
+
     }
 
     private void initFragment() {
