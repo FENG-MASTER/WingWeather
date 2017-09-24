@@ -48,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -93,9 +94,25 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
     @BindView(R.id.ll_toolbar_date)
     LinearLayout dateLayout;
 
+    //月份显示
+    @BindView(R.id.tv_toolbar_month)
+    TextView month;
+    //日显示
+    @BindView(R.id.tv_toolbar_day)
+    TextView day;
+
+    /**
+     * 是否正在播放日期动画标志位
+     */
     private boolean dateAnimatorFlag=false;
 
+    /**
+     * 显示日期动画
+     */
     private ObjectAnimator visbleAnimator;
+    /**
+     * 隐藏日期动画
+     */
     private ObjectAnimator inVisbleAnimator;
 
     //存储所有fragment
@@ -121,6 +138,8 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
 
         setSupportActionBar(toolbar);
         setTitle(" ");
+
+        initDate();
 
         visbleAnimator=ObjectAnimator.ofFloat(dateLayout,"alpha",0f,1f).setDuration(500);
         visbleAnimator.addListener(new Animator.AnimatorListener() {
@@ -173,6 +192,12 @@ public class MainActivity extends BaseActivity implements View.OnLongClickListen
         setImageListener();
         setAppbarListener();
 
+    }
+
+    private void initDate(){
+
+        month.setText((Calendar.getInstance().get(Calendar.MONTH)+1)+"月");
+        day.setText(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"日");
     }
 
 

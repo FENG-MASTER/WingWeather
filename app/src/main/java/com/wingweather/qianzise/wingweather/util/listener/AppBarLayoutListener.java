@@ -4,6 +4,7 @@ import android.support.design.widget.AppBarLayout;
 
 /**
  * Created by qianzise on 2017/9/24.
+ * 重新设计下的监听接口
  */
 
 public abstract class AppBarLayoutListener implements AppBarLayout.OnOffsetChangedListener {
