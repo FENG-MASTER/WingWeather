@@ -22,16 +22,24 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 /**
  * Created by qianzise on 2017/9/23.
- *
+ * <p>
+ * 环状进度条
+ * <p>
+ * 目前不支持拖拽,只支持显示,支持添加中心view组件(只能一个)
+ * <p>
+ * 组件形状目前只能为正方形
  */
 
 public class RingBar extends RelativeLayout {
 
-    public static final int TYPE_ROUND=2;
-    public static final int TYPE_FLAT=1;
-
-
-    private List<ProgressListener> listenerList =new ArrayList<>();
+    /**
+     * 圆润线条
+     */
+    public static final int TYPE_ROUND = 2;
+    /**
+     * 棱角线条
+     */
+    public static final int TYPE_FLAT = 1;
     /**
      * 最大进度
      */
@@ -40,7 +48,7 @@ public class RingBar extends RelativeLayout {
      * 当前进度
      */
     protected int mProgress;
-
+    private List<ProgressListener> listenerList = new ArrayList<>();
     /**
      * 主画笔
      */
@@ -75,16 +83,15 @@ public class RingBar extends RelativeLayout {
      */
     private int textColor;
 
+    /**
+     * 线条种类{@link RingBar#TYPE_ROUND} {@link RingBar#TYPE_FLAT}
+     */
     private int borderType;
 
     private RectF mRect;
     private int degree;
 
 
-
-    /**
-     * @param context
-     */
     public RingBar(Context context) {
         super(context);
     }
@@ -108,11 +115,11 @@ public class RingBar extends RelativeLayout {
         max = array.getInteger(R.styleable.RingBar_max, 100);
 
         degree = array.getInteger(R.styleable.RingBar_degree, 360);
-        borderType=array.getInteger(R.styleable.RingBar_borderType,TYPE_FLAT);
+        borderType = array.getInteger(R.styleable.RingBar_borderType, TYPE_FLAT);
 
         array.recycle();
 
-        if (displayProgress){
+        if (displayProgress) {
             initDisplayText();
         }
 
@@ -120,11 +127,13 @@ public class RingBar extends RelativeLayout {
         init();
 
 
-
     }
 
-    private void initDisplayText(){
-        TextView textView=new TextView(getContext());
+    /**
+     * 初始化显示文字,当{@link RingBar#displayProgress }为真,则调用这函数
+     */
+    private void initDisplayText() {
+        TextView textView = new TextView(getContext());
         textView.setTextSize(textSize);
         textView.setTextColor(textColor);
         addProgressListener(progress -> textView.setText(String.valueOf(progress)));
@@ -132,13 +141,15 @@ public class RingBar extends RelativeLayout {
     }
 
 
-
+    /**
+     * 初始化
+     */
     private void init() {
 
         mFinishPaint = new Paint(ANTI_ALIAS_FLAG);
         mUnFinishPaint = new Paint(ANTI_ALIAS_FLAG);
 
-        if (borderType==TYPE_ROUND){
+        if (borderType == TYPE_ROUND) {
             mFinishPaint.setStrokeCap(Paint.Cap.ROUND);
             mUnFinishPaint.setStrokeCap(Paint.Cap.ROUND);
         }
@@ -150,8 +161,6 @@ public class RingBar extends RelativeLayout {
         mUnFinishPaint.setColor(unFinishColor);
 
 
-
-
         mFinishPaint.setStyle(Paint.Style.STROKE);
         mUnFinishPaint.setStyle(Paint.Style.STROKE);
 
@@ -159,51 +168,25 @@ public class RingBar extends RelativeLayout {
         mUnFinishPaint.setStrokeWidth(borderWidth);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        mRect = new RectF(borderWidth, borderWidth, w - 2 * borderWidth, h - 2 * borderWidth);
+    /**
+     * 增加进度变化监听器
+     *
+     * @param listener 监听器
+     */
+    public void addProgressListener(ProgressListener listener) {
+        listenerList.add(listener);
     }
 
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-
-        float start = 270 - degree / 2;
-        float anglef = (1f * getProgress()) / getMax() * degree;
-
-        float angleunf = degree - anglef;
-        if (getProgress() != 0) {
-            canvas.drawArc(mRect, start, anglef, false, mFinishPaint);
-        }
-        if (getProgress() != getMax()) {
-            canvas.drawArc(mRect, start + anglef, angleunf, false, mUnFinishPaint);
-        }
-
-    }
-
-    public int getProgress() {
-        return mProgress;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setProgress(int mProgress) {
-        this.mProgress = mProgress;
-        invalidate();
-        notifyProgressChange(mProgress);
-    }
-
-    @Override
-    public void addView(View child) {
-        super.addView(child);
-        initView(child);
-    }
-
+    /**
+     * 初始化子view,每个新加的子view都要经过这个函数
+     * <p>
+     * 主要功能:
+     * <p>
+     * 检测是否超过了一个子view,如果是则报错
+     * 添加的子view强制设置成居中位置
+     *
+     * @param view 子view
+     */
     private void initView(View view) {
 
         if (getChildCount() == 0) {
@@ -222,6 +205,76 @@ public class RingBar extends RelativeLayout {
             view.setLayoutParams(layoutParams);
             view.invalidate();
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        //设置绘制区域
+        mRect = new RectF(borderWidth, borderWidth, w - 2 * borderWidth, h - 2 * borderWidth);
+    }
+
+    /**
+     * 注意,如果继承的是viewGroup的子类,要自己绘制的话,代码写在这里,已经不会调用{@link ViewGroup#onDraw(Canvas)}方法
+     *
+     * @param canvas 画布
+     */
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+
+        float start = 270 - degree / 2;
+        float anglef = (1f * getProgress()) / getMax() * degree;
+
+        float angleunf = degree - anglef;
+        if (getProgress() != 0) {
+            canvas.drawArc(mRect, start, anglef, false, mFinishPaint);
+        }
+        if (getProgress() != getMax()) {
+            canvas.drawArc(mRect, start + anglef, angleunf, false, mUnFinishPaint);
+        }
+
+    }
+
+    /**
+     * 获得进度
+     *
+     * @return 进度
+     */
+    public int getProgress() {
+        return mProgress;
+    }
+
+    /**
+     * 获得最大进度
+     *
+     * @return 最大进度
+     */
+    public int getMax() {
+        return max;
+    }
+
+    /**
+     * 设置进度
+     *
+     * @param mProgress 进度
+     */
+    public void setProgress(int mProgress) {
+        this.mProgress = mProgress;
+        invalidate();
+        notifyProgressChange(mProgress);
+    }
+
+    private void notifyProgressChange(int progress) {
+        for (ProgressListener progressListener : listenerList) {
+            progressListener.onProgressChange(progress);
+        }
+    }
+
+    @Override
+    public void addView(View child) {
+        super.addView(child);
+        initView(child);
     }
 
     @Override
@@ -251,44 +304,39 @@ public class RingBar extends RelativeLayout {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int wMode=MeasureSpec.getMode(widthMeasureSpec);
-        int width=MeasureSpec.getSize(widthMeasureSpec);
-        int hMode=MeasureSpec.getMode(heightMeasureSpec);
-        int height=MeasureSpec.getSize(heightMeasureSpec);
-
-        if (width>height){
-            height=width;
-        }else {
-            width=height;
-        }
-
-
-        super.onMeasure(MeasureSpec.makeMeasureSpec(width,wMode), MeasureSpec.makeMeasureSpec(height,hMode));
-    }
-
-
-    public interface ProgressListener{
-        void onProgressChange(int progress);
-    }
-
-    public void addProgressListener(ProgressListener listener){
-        listenerList.add(listener);
-    }
-
-    public void removeProgressListener(ProgressListener listener){
-        listenerList.remove(listener);
-    }
-
-    public void notifyProgressChange(int progress){
-        for (ProgressListener progressListener : listenerList) {
-            progressListener.onProgressChange(progress);
-        }
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         listenerList.clear();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int wMode = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int hMode = MeasureSpec.getMode(heightMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        //以最短边设置正方形
+        if (width > height) {
+            height = width;
+        } else {
+            width = height;
+        }
+
+
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width, wMode), MeasureSpec.makeMeasureSpec(height, hMode));
+    }
+
+    /**
+     * 移除进度变化监听器
+     *
+     * @param listener 监听器
+     */
+    public void removeProgressListener(ProgressListener listener) {
+        listenerList.remove(listener);
+    }
+
+    public interface ProgressListener {
+        void onProgressChange(int progress);
     }
 }
