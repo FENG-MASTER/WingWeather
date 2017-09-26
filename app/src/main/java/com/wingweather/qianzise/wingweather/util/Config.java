@@ -13,7 +13,7 @@ public final class Config {
     public final static String KEY_COLOR2 = "anther_color";
 
 
-    public final static String DEF_CITY1 = "成都";
+    public final static String DEF_CITY1 = "广西";
     public final static String DEF_CITY2 = "湛江";
 
     //图片文件前缀

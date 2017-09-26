@@ -12,6 +12,7 @@ import com.wingweather.qianzise.wingweather.App;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by qianzise on 2017/3/5 0005.
@@ -36,15 +37,32 @@ public class MyPreferences {
      * @return 城市名
      */
     public String getCityName2(){
-        return  getSharedPreferences().getString(Config.KEY_CITY1,Config.DEF_CITY1);
+        return  getSharedPreferences().getString(Config.KEY_CITY2,Config.DEF_CITY2);
     }
 
     /**
      * 获得城市1名称
+     *
+     * 第一次启动本APP的时候,获得的是当前所在城市
+     *
      * @return 城市名
      */
     public String getCityName1(){
-        return  getSharedPreferences().getString(Config.KEY_CITY2,Config.DEF_CITY2);
+        if (isFirstOpen()){
+            String cityName=null;
+            try {
+                cityName=Util.getLocation();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (cityName!=null){
+                setCityName1(cityName);
+                clearFirstOpen();
+                return cityName;
+            }
+
+        }
+        return  getSharedPreferences().getString(Config.KEY_CITY1,Config.DEF_CITY1);
     }
 
     /**
@@ -118,6 +136,15 @@ public class MyPreferences {
         }
         return index==1?Color.parseColor(getSharedPreferences().getString(Config.KEY_COLOR1,"#000000")):Color.parseColor(getSharedPreferences().getString(Config.KEY_COLOR2,"#000000"));
 
+    }
+
+    public boolean isFirstOpen(){
+       return sharedPreferences.getBoolean("firstOpen",true);
+    }
+
+    public void clearFirstOpen(){
+
+        sharedPreferences.edit().putBoolean("firstOpen",false).apply();
     }
 
 

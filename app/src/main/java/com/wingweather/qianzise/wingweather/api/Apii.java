@@ -22,8 +22,9 @@ import static android.graphics.Bitmap.Config.ARGB_8888;
 
 /**
  * 用的和风天气的API
+ *
+ * 单例
  */
-
 public class Apii {
     private static final String BASE_API_URL=" https://free-api.heweather.com/v5/";
     private static final String DAYILY_FORECAST="forecast/";
@@ -53,6 +54,12 @@ public class Apii {
     }
 
 
+    /**
+     * 用于检测数据是否正常
+     * TODO: 未完成
+     * @param jsonObject 数据
+     * @return 正常与否
+     */
     private static boolean checkForResult(String jsonObject){
         return  true;
     }

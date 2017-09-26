@@ -9,7 +9,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.wingweather.qianzise.wingweather.activity.BaseActivity;
+import com.wingweather.qianzise.wingweather.util.Util;
 import com.wingweather.qianzise.wingweather.view.RingBar;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,7 @@ public class TestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
+
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
